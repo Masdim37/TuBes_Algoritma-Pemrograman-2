@@ -25,14 +25,14 @@ type Tugas struct { //hanya berisi rincian tugas
 	namaTugas                                                                                                                                                                                               string
 	pertanyaan1, pertanyaan2, pertanyaan3, pertanyaan4, pertanyaan5, pertanyaan6, pertanyaan7, pertanyaan8, pertanyaan9, pertanyaan10                                                                       string
 	jawabanPertanyaan1, jawabanPertanyaan2, jawabanPertanyaan3, jawabanPertanyaan4, jawabanPertanyaan5, jawabanPertanyaan6, jawabanPertanyaan7, jawabanPertanyaan8, jawabanPertanyaan9, jawabanPertanyaan10 string
-	nilai                                                                                                                                                                                                   int
+	nilaiPertanyaan1, nilaiPertanyaan2, nilaiPertanyaan3, nilaiPertanyaan4, nilaiPertanyaan5, nilaiPertanyaan6, nilaiPertanyaan7, nilaiPertanyaan8, nilaiPertanyaan9, nilaiPertanyaan10 int
 }
 
 type Quiz struct { //hanya berisi rincian quiz
 	namaQuiz                                                                                                                                                                                                string
 	pertanyaan1, pertanyaan2, pertanyaan3, pertanyaan4, pertanyaan5, pertanyaan6, pertanyaan7, pertanyaan8, pertanyaan9, pertanyaan10                                                                       string
 	jawabanPertanyaan1, jawabanPertanyaan2, jawabanPertanyaan3, jawabanPertanyaan4, jawabanPertanyaan5, jawabanPertanyaan6, jawabanPertanyaan7, jawabanPertanyaan8, jawabanPertanyaan9, jawabanPertanyaan10 string
-	nilai                                                                                                                                                                                                   int
+	nilaiPertanyaan1, nilaiPertanyaan2, nilaiPertanyaan3, nilaiPertanyaan4, nilaiPertanyaan5, nilaiPertanyaan6, nilaiPertanyaan7, nilaiPertanyaan8, nilaiPertanyaan9, nilaiPertanyaan10 int                                                                                                                                                                                                  int
 }
 
 type Nilai struct { //hanya berisi rincian nilai
@@ -59,9 +59,13 @@ var guru ArrGuru //membuat array bernama guru dengan tipe data ArrGuru (array st
 
 var matkul ArrMatkul //membuat array bernama matkul dengan tipe data ArrMatkul (array struct)
 
-var tugas ArrTugas //membuat array bernama tugas dengan tipe data ArrTugas (array struct)
+var tugasMatkulMatematika ArrTugas //membuat array bernama tugas dengan tipe data ArrTugas (array struct)
+var tugasMatkulIPA ArrTugas //membuat array bernama tugas dengan tipe data ArrTugas (array struct)
+var tugasMatkulBIndo ArrTugas //membuat array bernama tugas dengan tipe data ArrTugas (array struct)
 
-var quiz ArrQuiz //membuat array bernama quiz dengan tipe data ArrQuiz (array struct)
+var quizMatkulMatematika ArrQuiz //membuat array bernama quiz dengan tipe data ArrQuiz (array struct)
+var quizMatkulIPA ArrQuiz //membuat array bernama quiz dengan tipe data ArrQuiz (array struct)
+var quizMatkulBIndo ArrQuiz //membuat array bernama quiz dengan tipe data ArrQuiz (array struct)
 
 var nilai ArrNilai //membuat array bernama nilai dengan tipe data ArrNilai (array struct)
 
@@ -141,7 +145,9 @@ MenuLogin:
 		case 1: //tampilan jika memilih menu 1. Tambah Tugas
 
 		case 2: //tampilan jika memilih menu 2. Tambah Quiz
-
+		if 	
+		fmt.Print("Masukkan Nama Quiz : ")
+			fmt.Scan(&dataQuiz.namaQuiz)
 		case 3: //tampilan jika memilih menu 3. Edit Tugas
 
 		case 4: //tampilan jika memilih menu 4. Edit Quiz
