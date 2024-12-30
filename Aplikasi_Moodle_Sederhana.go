@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 const SIZE int = 100
 
@@ -16,23 +18,18 @@ type Guru struct { //hanya berisi biodata guru
 }
 
 type Matkul struct { //hanya berisi rincian matkul
-	namaPengajar, namaMatkul           string
-	namaTugas1, namaTugas2, namaTugas3 string
-	namaQuiz1, namaQuiz2, namaQuiz3    string
-}
-
-type Tugas struct { //hanya berisi rincian tugas
-	namaTugas                                                                                                                                                                                               string
-	pertanyaan1, pertanyaan2, pertanyaan3, pertanyaan4, pertanyaan5, pertanyaan6, pertanyaan7, pertanyaan8, pertanyaan9, pertanyaan10                                                                       string
-	jawabanPertanyaan1, jawabanPertanyaan2, jawabanPertanyaan3, jawabanPertanyaan4, jawabanPertanyaan5, jawabanPertanyaan6, jawabanPertanyaan7, jawabanPertanyaan8, jawabanPertanyaan9, jawabanPertanyaan10 string
-	nilaiPertanyaan1, nilaiPertanyaan2, nilaiPertanyaan3, nilaiPertanyaan4, nilaiPertanyaan5, nilaiPertanyaan6, nilaiPertanyaan7, nilaiPertanyaan8, nilaiPertanyaan9, nilaiPertanyaan10 int
-}
-
-type Quiz struct { //hanya berisi rincian quiz
-	namaQuiz                                                                                                                                                                                                string
-	pertanyaan1, pertanyaan2, pertanyaan3, pertanyaan4, pertanyaan5, pertanyaan6, pertanyaan7, pertanyaan8, pertanyaan9, pertanyaan10                                                                       string
-	jawabanPertanyaan1, jawabanPertanyaan2, jawabanPertanyaan3, jawabanPertanyaan4, jawabanPertanyaan5, jawabanPertanyaan6, jawabanPertanyaan7, jawabanPertanyaan8, jawabanPertanyaan9, jawabanPertanyaan10 string
-	nilaiPertanyaan1, nilaiPertanyaan2, nilaiPertanyaan3, nilaiPertanyaan4, nilaiPertanyaan5, nilaiPertanyaan6, nilaiPertanyaan7, nilaiPertanyaan8, nilaiPertanyaan9, nilaiPertanyaan10 int                                                                                                                                                                                                  int
+	namaPengajar, namaMatkul string
+	namaTugas                [SIZE]string
+	namaQuiz                 [SIZE]string
+	pertanyaanTugas          [SIZE]string
+	pertanyaanQuiz           [SIZE]string
+	jawabanPertanyaanTugas   [SIZE]string
+	jawabanPertanyaanQuiz    [SIZE]string
+	bobotNilaiTugas          [SIZE]int
+	bobotNilaiQuiz           [SIZE]int
+	nilaiTugas               [SIZE]int
+	nilaiQuiz                [SIZE]int
+	nilaiMatkul              float64
 }
 
 type Nilai struct { //hanya berisi rincian nilai
@@ -47,25 +44,15 @@ type ArrGuru [SIZE]Guru //membuat tipe data ArrGuru yang merupakan array struct
 
 type ArrMatkul [SIZE]Matkul //membuat tipe data ArrMatkul yang merupakan array struct
 
-type ArrTugas [SIZE]Tugas //membuat tipe data ArrTugas yang merupakan array struct
-
-type ArrQuiz [SIZE]Quiz //membuat tipe data ArrQuiz yang merupakan array struct
-
 type ArrNilai [SIZE]Nilai //membuat tipe data ArrNilai yang merupakan array struct
 
 var murid ArrMurid //membuat array bernama murid dengan tipe data ArrMurid (array struct)
 
 var guru ArrGuru //membuat array bernama guru dengan tipe data ArrGuru (array struct)
 
-var matkul ArrMatkul //membuat array bernama matkul dengan tipe data ArrMatkul (array struct)
-
-var tugasMatkulMatematika ArrTugas //membuat array bernama tugas dengan tipe data ArrTugas (array struct)
-var tugasMatkulIPA ArrTugas //membuat array bernama tugas dengan tipe data ArrTugas (array struct)
-var tugasMatkulBIndo ArrTugas //membuat array bernama tugas dengan tipe data ArrTugas (array struct)
-
-var quizMatkulMatematika ArrQuiz //membuat array bernama quiz dengan tipe data ArrQuiz (array struct)
-var quizMatkulIPA ArrQuiz //membuat array bernama quiz dengan tipe data ArrQuiz (array struct)
-var quizMatkulBIndo ArrQuiz //membuat array bernama quiz dengan tipe data ArrQuiz (array struct)
+var matkulMatematika ArrMatkul //membuat array bernama matkulMatematika dengan tipe data ArrMatkul (array struct)
+var matkulIPA ArrMatkul        //membuat array bernama matkulIPA dengan tipe data ArrMatkul (array struct)
+var matkulBIndo ArrMatkul      //membuat array bernama matkulBIndo dengan tipe data ArrMatkul (array struct)
 
 var nilai ArrNilai //membuat array bernama nilai dengan tipe data ArrNilai (array struct)
 
@@ -73,9 +60,6 @@ func main() {
 	var dataMurid *Murid
 	var dataGuru *Guru
 	var dataMatkul *Matkul
-	var dataTugas *Tugas
-	var dataQuiz *Quiz
-	var dataNilai *Nilai
 	var pilihanLogin int
 	var username, password string
 	var pilihanMenu int
@@ -107,11 +91,7 @@ MenuLogin:
 		// Cari data guru
 		for i := 0; i < SIZE; i++ {
 			if guru[i].username == username && guru[i].password == password { //cek login
-				dataGuru = &guru[i]     //Referensikan dataGuru ke array guru, selanjutnya tinggal gunakan dataGuru.[komponen]
-				dataMatkul = &matkul[i] //Referensikan dataMatkul ke array matkul, selanjutnya tinggal gunakan dataMatkul.[komponen]
-				dataTugas = &tugas[i]   //Referensikan dataTugas ke array tugas, selanjutnya tinggal gunakan dataTugas.[komponen]
-				dataQuiz = &quiz[i]     //Referensikan dataQuiz ke array quiz, selanjutnya tinggal gunakan dataQuiz.[komponen]
-				dataNilai = &nilai[i]   //Referensikan dataNilai ke array nilai, selanjutnya tinggal gunakan dataNilai.[komponen]
+				dataGuru = &guru[i] //Referensikan dataGuru ke array guru, selanjutnya tinggal gunakan dataGuru.[komponen]
 				break
 			}
 		}
@@ -145,9 +125,42 @@ MenuLogin:
 		case 1: //tampilan jika memilih menu 1. Tambah Tugas
 
 		case 2: //tampilan jika memilih menu 2. Tambah Quiz
-		if 	
-		fmt.Print("Masukkan Nama Quiz : ")
-			fmt.Scan(&dataQuiz.namaQuiz)
+			// Tentukan dataMatkul berdasarkan nama guru
+			if dataGuru.nama == "Dhimas Hafizh" {
+				dataMatkul = &matkulMatematika[0]
+			} else if dataGuru.nama == "Satrio Wibowo" {
+				dataMatkul = &matkulIPA[0]
+			} else if dataGuru.nama == "Azaria Nanda" {
+				dataMatkul = &matkulBIndo[0]
+			}
+
+			for i := 0; i < SIZE; {
+				if dataMatkul.namaQuiz[i] == "" { // Jika indeks kosong
+					fmt.Print("Masukkan nama Quiz", i+1, " : ")
+					fmt.Scan(&dataMatkul.namaQuiz[i])
+					break
+				} else {
+					i++ // Pindah ke indeks berikutnya jika tidak kosong
+				}
+			}
+
+			for i := 0; i < SIZE; i++ {
+				if dataMatkul.namaQuiz[i] != "" { // Jika indeks tidak kosong
+					var tempPertanyaan string
+					fmt.Print("Masukkan pertanyaan ke-", i+1, " (masukkan stop untuk berhenti) : ")
+					fmt.Scan(&tempPertanyaan)
+					if tempPertanyaan == "stop" {
+						break
+					}
+					dataMatkul.pertanyaanQuiz[i] = tempPertanyaan
+					fmt.Print("Masukkan kunci jawaban pertanyaan ke-", i+1, " : ")
+					fmt.Scan(&dataMatkul.jawabanPertanyaanQuiz[i])
+					fmt.Print("Masukkan bobot nilai pertanyaan ke-", i+1, " : ")
+					fmt.Scan(&dataMatkul.bobotNilaiQuiz[i])
+
+				}
+			}
+
 		case 3: //tampilan jika memilih menu 3. Edit Tugas
 
 		case 4: //tampilan jika memilih menu 4. Edit Quiz
@@ -159,6 +172,10 @@ MenuLogin:
 		case 7: //tampilan jika memilih menu 7. Tampilkan List Tugas
 
 		case 8: //tampilan jika memilih menu 8. Tampilkan List Quiz
+			fmt.Println("Data Quiz yang tersimpan")
+			for i := 0; i < SIZE; i++ {
+				fmt.Println(dataMatkul.namaQuiz[i])
+			}
 
 		case 9: //tampilan jika memilih menu 9. Forum Mata Kuliah
 
