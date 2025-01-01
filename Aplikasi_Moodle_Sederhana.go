@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 const SIZE int = 100
 
@@ -18,51 +16,71 @@ type Guru struct { //hanya berisi biodata guru
 }
 
 type Matkul struct { //hanya berisi rincian matkul
-	namaPengajar, namaMatkul string
-	namaTugas                [SIZE]string
-	namaQuiz                 [SIZE]string
-	pertanyaanTugas          [SIZE]string
-	pertanyaanQuiz           [SIZE]string
-	jawabanPertanyaanTugas   [SIZE]string
-	jawabanPertanyaanQuiz    [SIZE]string
-	bobotNilaiTugas          [SIZE]int
-	bobotNilaiQuiz           [SIZE]int
-	nilaiTugas               [SIZE]int
-	nilaiQuiz                [SIZE]int
-	nilaiMatkul              float64
+	namaTugas              [SIZE]string
+	namaQuiz               [SIZE]string
+	pertanyaanTugas        [SIZE]string
+	pertanyaanQuiz         [SIZE]string
+	jawabanPertanyaanTugas [SIZE]string
+	jawabanPertanyaanQuiz  [SIZE]string
+	bobotNilaiTugas        [SIZE]int
+	bobotNilaiQuiz         [SIZE]int
 }
 
-type Nilai struct { //hanya berisi rincian nilai
-	nilaiTugas1, nilaiTugas2, nilaiTugas3 int
-	nilaiQuiz1, nilaiQuiz2, nilaiQuiz3    int
-	nilaiRataRata                         float64
+type jawabanMatkul struct { //hanya berisi jawaban murid
+	jawabanPertanyaanTugas [SIZE]string
+	jawabanPertanyaanQuiz  [SIZE]string
+	nilaiPertanyaanTugas   [SIZE]int
+	nilaiPertanyaanQuiz    [SIZE]int
+	nilaiTugas             [SIZE]float64
+	nilaiQuiz              [SIZE]float64
+	nilaiMatkul            float64
 }
 
 type ArrMurid [SIZE]Murid //membuat tipe data ArrMurid yang merupakan array struct
-
-type ArrGuru [SIZE]Guru //membuat tipe data ArrGuru yang merupakan array struct
-
-type ArrMatkul [SIZE]Matkul //membuat tipe data ArrMatkul yang merupakan array struct
-
-type ArrNilai [SIZE]Nilai //membuat tipe data ArrNilai yang merupakan array struct
+type ArrGuru [SIZE]Guru   //membuat tipe data ArrGuru yang merupakan array struct
 
 var murid ArrMurid //membuat array bernama murid dengan tipe data ArrMurid (array struct)
 
 var guru ArrGuru //membuat array bernama guru dengan tipe data ArrGuru (array struct)
 
-var matkulMatematika ArrMatkul //membuat array bernama matkulMatematika dengan tipe data ArrMatkul (array struct)
-var matkulIPA ArrMatkul        //membuat array bernama matkulIPA dengan tipe data ArrMatkul (array struct)
-var matkulBIndo ArrMatkul      //membuat array bernama matkulBIndo dengan tipe data ArrMatkul (array struct)
+var matkulMatematika Matkul
+var matkulIPA Matkul
+var matkulBIndo Matkul
 
-var nilai ArrNilai //membuat array bernama nilai dengan tipe data ArrNilai (array struct)
+var jawabanMatkulMatematika jawabanMatkul //membuat array bernama matkulMatematika dengan tipe data ArrMatkul (array struct)
+var jawabanMatkulIPA jawabanMatkul        //membuat array bernama matkulIPA dengan tipe data ArrMatkul (array struct)
+var jawabanMatkulBIndo jawabanMatkul      //membuat array bernama matkulBIndo dengan tipe data ArrMatkul (array struct)
+
+func isEmpty(arrData []string) bool { //function untuk cek apakah array kosong atau tidak
+	var cek bool = true
+	for i := 0; i < len(arrData); i++ {
+		if arrData[i] == "" {
+			continue
+		} else {
+			cek = false
+			break
+		}
+	}
+	return cek
+}
+
+func tampilkan(arrData []string) { //prosedur untuk menampilkan isi array
+	for i := 0; i < len(arrData); i++ {
+		fmt.Printf("%d. %s\n", i+1, arrData[i])
+		if arrData[i+1] == "" {
+			break
+		}
+	}
+}
 
 func main() {
 	var dataMurid *Murid
 	var dataGuru *Guru
 	var dataMatkul *Matkul
+	var dataJawabanMatkul *jawabanMatkul
 	var pilihanLogin int
 	var username, password string
-	var pilihanMenu int
+	var pilihanMenu, pilihanMenuMatkul int
 
 	//isi data array guru
 	guru[0] = Guru{"Dhimas Hafizh", "NIP123", "GuruDhimas", "dhimas", "Matematika"}
@@ -78,8 +96,10 @@ MenuLogin:
 	fmt.Println("--- LMS SEDERHANA ---")
 	fmt.Println("1. Login Guru")
 	fmt.Println("2. Login Murid")
+	fmt.Println("3. Keluar")
 	fmt.Print("Masukkan pilihan anda : ")
 	fmt.Scan(&pilihanLogin)
+	fmt.Println()
 
 	switch pilihanLogin {
 	case 1:
@@ -91,7 +111,7 @@ MenuLogin:
 		// Cari data guru
 		for i := 0; i < SIZE; i++ {
 			if guru[i].username == username && guru[i].password == password { //cek login
-				dataGuru = &guru[i] //Referensikan dataGuru ke array guru, selanjutnya tinggal gunakan dataGuru.[komponen]
+				dataGuru = &guru[i]
 				break
 			}
 		}
@@ -100,6 +120,13 @@ MenuLogin:
 			fmt.Println()
 			fmt.Println("Selamat Datang", dataGuru.nama)
 			fmt.Println("Mata kuliah yang anda ajar :", dataGuru.namaMatkul)
+			if dataGuru.nama == "Dhimas Hafizh" {
+				dataMatkul = &matkulMatematika
+			} else if dataGuru.nama == "Satrio Wibowo" {
+				dataMatkul = &matkulIPA
+			} else if dataGuru.nama == "Azaria Nanda" {
+				dataMatkul = &matkulBIndo
+			}
 		} else {
 			fmt.Println()
 			fmt.Println("Username atau password salah")
@@ -118,48 +145,52 @@ MenuLogin:
 		fmt.Println("8. Tampilkan List Quiz")
 		fmt.Println("9. Forum Mata Kuliah")
 		fmt.Println("10. Lihat List Nilai Murid")
+		fmt.Println("11. Keluar")
 		fmt.Print("Pilihan anda : ")
 		fmt.Scan(&pilihanMenu)
+		fmt.Println()
 
 		switch pilihanMenu {
 		case 1: //tampilan jika memilih menu 1. Tambah Tugas
 
 		case 2: //tampilan jika memilih menu 2. Tambah Quiz
-			// Tentukan dataMatkul berdasarkan nama guru
-			if dataGuru.nama == "Dhimas Hafizh" {
-				dataMatkul = &matkulMatematika[0]
-			} else if dataGuru.nama == "Satrio Wibowo" {
-				dataMatkul = &matkulIPA[0]
-			} else if dataGuru.nama == "Azaria Nanda" {
-				dataMatkul = &matkulBIndo[0]
-			}
-
-			for i := 0; i < SIZE; {
-				if dataMatkul.namaQuiz[i] == "" { // Jika indeks kosong
-					fmt.Print("Masukkan nama Quiz", i+1, " : ")
+			var tempNamaQuiz string
+			var tempPertanyaan string
+			for i := 0; i < SIZE; i++ {
+				if dataMatkul.namaQuiz[i] == "" { // Cek apakah ada data kosong pada array namaQuiz, jika indeks i kosong maka lakukan input
+					fmt.Print("Masukkan nama Quiz : ")
 					fmt.Scan(&dataMatkul.namaQuiz[i])
+					tempNamaQuiz = dataMatkul.namaQuiz[i]
 					break
-				} else {
-					i++ // Pindah ke indeks berikutnya jika tidak kosong
 				}
 			}
+
+			fmt.Println("!! PERHATIAN !!")
+			fmt.Println("Jumlah pertanyaan quiz yang bisa dimasukkan adalah 10 pertanyaan")
+			fmt.Println("Masukkan 'stop' untuk berhenti apabila ingin menambahkan pertanyaan quiz kurang dari 10")
 
 			for i := 0; i < SIZE; i++ {
-				if dataMatkul.namaQuiz[i] != "" { // Jika indeks tidak kosong
-					var tempPertanyaan string
-					fmt.Print("Masukkan pertanyaan ke-", i+1, " (masukkan stop untuk berhenti) : ")
-					fmt.Scan(&tempPertanyaan)
-					if tempPertanyaan == "stop" {
-						break
-					}
-					dataMatkul.pertanyaanQuiz[i] = tempPertanyaan
-					fmt.Print("Masukkan kunci jawaban pertanyaan ke-", i+1, " : ")
-					fmt.Scan(&dataMatkul.jawabanPertanyaanQuiz[i])
-					fmt.Print("Masukkan bobot nilai pertanyaan ke-", i+1, " : ")
-					fmt.Scan(&dataMatkul.bobotNilaiQuiz[i])
+				if dataMatkul.namaQuiz[i] == tempNamaQuiz {
+					for j := 0; j < 10; j++ {
+						fmt.Print("Masukkan pertanyaan ke-", j+1, " : ")
+						fmt.Scan(&tempPertanyaan)
 
+						if tempPertanyaan == "stop" { //kalo inputan 'stop', maka berhenti
+							break
+						}
+
+						dataMatkul.pertanyaanQuiz[i*10+j] = tempPertanyaan //kalo inputan bukan 'stop', maka masukkan ke array pertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode pertanyaan quiz)
+
+						fmt.Print("Masukkan kunci jawaban pertanyaan ke-", j+1, " : ") //Input jawaban pertanyaan quiz
+						fmt.Scan(&dataMatkul.jawabanPertanyaanQuiz[i*10+j])            //Kunci jawaban disimpan ke array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode kunci jawaban pertanyaan quiz)
+
+						fmt.Print("Masukkan bobot nilai pertanyaan ke-", j+1, " : ") //input bobot nilai pertanyaan quiz
+						fmt.Scan(&dataMatkul.bobotNilaiQuiz[i*10+j])                 //Bobot nilai pertanyaan disimpan ke array bobotNilaiQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode bobot nilai pertanyaan quiz)
+					}
 				}
 			}
+			fmt.Println()
+			goto MenuGuru
 
 		case 3: //tampilan jika memilih menu 3. Edit Tugas
 
@@ -168,18 +199,60 @@ MenuLogin:
 		case 5: //tampilan jika memilih menu 5. Hapus Tugas
 
 		case 6: //tampilan jika memilih menu 6. Hapus Quiz
+			var pilihanHapusQuiz, konfirmasiHapusQuiz string
+
+			if isEmpty(dataMatkul.namaQuiz[:]) { //cek array namaQuiz kosong atau tidak
+				fmt.Println("Quiz kosong!")
+				fmt.Println("Tambah quiz terlebih dahulu!")
+			} else { //kalo ga kosong, tampilkan isi array namaQuiz dan lakukan penghapusan
+				fmt.Println("Data Quiz yang tersimpan :")
+				tampilkan(dataMatkul.namaQuiz[:])
+				fmt.Println()
+
+				fmt.Print("Masukkan nama quiz yang ingin dihapus : ")
+				fmt.Scan(&pilihanHapusQuiz)
+				fmt.Print("Apakah anda yakin ingin mengapus quiz ", pilihanHapusQuiz, " ? [y/n] : ")
+				fmt.Scan(&konfirmasiHapusQuiz)
+				if konfirmasiHapusQuiz == "y" || konfirmasiHapusQuiz == "Y" { //kalo masukin konfirmasi y, lakukan penghapusan
+					for i := 0; i < SIZE; i++ {
+						if dataMatkul.namaQuiz[i] == pilihanHapusQuiz { //kalo nama quiz yang diinputkan sama dengan nama quiz yang ada di array namaQuiz, maka lakukan penghapusan
+							dataMatkul.namaQuiz[i] = "" //hapus nama quiz
+							for j := 0; j < 10; j++ {
+								dataMatkul.pertanyaanQuiz[i*10+j] = ""        //hapus pertanyaan quiz (i = kode quiz, 10 = maks pertanyaan, j = kode pertanyaan quiz)
+								dataMatkul.jawabanPertanyaanQuiz[i*10+j] = "" //hapus kunci jawaban quiz (i = kode quiz, 10 = maks pertanyaan, j = kode kunci jawaban pertanyaan quiz)
+								dataMatkul.bobotNilaiQuiz[i*10+j] = 0         // Menghapus bobot nilai pertanyaan quiz (i = kode quiz, 10 = maks pertanyaan, j = kode bobot nilai pertanyaan quiz)
+							}
+							fmt.Println("Quiz", pilihanHapusQuiz, "berhasil dihapus.") //tampilkan informasi bahwa quiz yang dipilih berhasil dihapus
+							break                                                      //keluar dari loop
+						}
+					}
+				} else if konfirmasiHapusQuiz == "n" || konfirmasiHapusQuiz == "N" { //kalo masukin konfirmasi n, batalkan penghapusan
+					fmt.Print("Penghapusan quiz ", pilihanHapusQuiz, " dibatalkan") //tampilkan informasi bahwa quiz yang dipilih ngga jadi dihapus
+				}
+				fmt.Println()
+				goto MenuGuru
+			}
 
 		case 7: //tampilan jika memilih menu 7. Tampilkan List Tugas
 
 		case 8: //tampilan jika memilih menu 8. Tampilkan List Quiz
-			fmt.Println("Data Quiz yang tersimpan")
-			for i := 0; i < SIZE; i++ {
-				fmt.Println(dataMatkul.namaQuiz[i])
+			if isEmpty(dataMatkul.namaQuiz[:]) { //cek array namaQuiz kosong atau tidak
+				fmt.Println("Quiz kosong!")
+				fmt.Println("Tambah quiz terlebih dahulu!")
+			} else { //kalo ga kosong, tampilkan isi array namaQuiz
+				fmt.Println("Data Quiz yang tersimpan :")
+				tampilkan(dataMatkul.namaQuiz[:])
 			}
+			fmt.Println()
+			goto MenuGuru
 
 		case 9: //tampilan jika memilih menu 9. Forum Mata Kuliah
 
 		case 10: //tampilan jika memilih menu 10. Lihat List Nilai Murid
+
+		case 11: //tampilan jika memilih menu 11. Keluar
+			fmt.Println()
+			goto MenuLogin
 
 		default: //tampilan jika memilih selain menu 1-10
 			fmt.Println("Pilihan yang dimasukkan tidak valid")
@@ -187,16 +260,15 @@ MenuLogin:
 			goto MenuGuru
 		}
 
-	case 2:
+	case 2: //tampilan jika memilih menu 2. Login Murid
 		fmt.Print("Masukkan username : ")
 		fmt.Scan(&username)
 		fmt.Print("Masukkan password : ")
 		fmt.Scan(&password)
-		// Panggil loginGuru dan tampilkan nama guru
-		// Cari data murid
+
 		for i := 0; i < SIZE; i++ {
-			if murid[i].username == username && murid[i].password == password {
-				dataMurid = &murid[i] // Referensikan ke elemen array
+			if murid[i].username == username && murid[i].password == password { //cek login
+				dataMurid = &murid[i]
 				break
 			}
 		}
@@ -211,7 +283,256 @@ MenuLogin:
 			goto MenuLogin
 		}
 
-	default:
+	MenuHomeMurid:
+		fmt.Println("1. Matematika")
+		fmt.Println("2. IPA")
+		fmt.Println("3. Bahasa Indonesia")
+		fmt.Println("4. Keluar")
+		fmt.Print("Masukkan pilihan anda : ")
+		fmt.Scan(&pilihanMenu)
+		fmt.Println()
+
+		switch pilihanMenu {
+		case 1: //tampilan jika memilih menu 1. Matematika
+			dataJawabanMatkul = &jawabanMatkulMatematika
+			dataMatkul = &matkulMatematika
+		MenuMatkulMatematika:
+			fmt.Println("1. Kerjakan Tugas")
+			fmt.Println("2. Kerjakan Quiz")
+			fmt.Println("3. Forum matkul")
+			fmt.Println("4. Tampilkan nilai rata-rata")
+			fmt.Println("5. Kembali ke home")
+			fmt.Print("Masukkan pilihan anda : ")
+			fmt.Scan(&pilihanMenuMatkul)
+			fmt.Println()
+
+			switch pilihanMenuMatkul {
+			case 1: //tampilan jika memilih menu 1. Kerjakan Tugas
+
+			case 2: //tampilan jika memilih menu 2. Kerjakan Quiz
+				var namaQuiz string
+				var totalPoinSoalQuiz int
+				var totalPoinJawabanQuiz int
+				if isEmpty(dataMatkul.namaQuiz[:]) { //kalo array namaQuiz kosong, tampilkan informasi bahwa quiz tidak tersedia
+					fmt.Println("Quiz Tidak Tersedia!")
+					fmt.Println("Hubungi guru anda untuk menambahkan quiz")
+					fmt.Println()
+					goto MenuMatkulMatematika
+				} else { //kalo array namaQuiz tidak kosong, tampilkan list quiz yang tersedia dan lakukan pengerjaan quiz
+					fmt.Println("List Quiz Tersededia :")
+					tampilkan(dataMatkul.namaQuiz[:])
+
+					fmt.Print("Masukkan nama quiz yang ingin dikerjakan : ")
+					fmt.Scan(&namaQuiz)
+					fmt.Println()
+					for i := 0; i < SIZE; i++ {
+						if dataMatkul.namaQuiz[i] == namaQuiz { //kalo nama quiz yang diinputkan sama dengan nama quiz yang ada di array namaQuiz, maka lakukan pengerjaan quiz
+							totalPoinSoalQuiz = 0    //ini nilai poin total soal quiz
+							totalPoinJawabanQuiz = 0 //ini nilai poin total jawaban quiz siswa
+
+							for j := 0; j < 10; j++ {
+								fmt.Println(dataMatkul.pertanyaanQuiz[i*10+j])                                                   //tampilkan pertanyaan quiz di array pertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode pertanyaan quiz)
+								fmt.Scan(&dataJawabanMatkul.jawabanPertanyaanQuiz[i*10+j])                                       //input jawaban siswa, simpan di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode jawaban pertanyaan quiz)
+								if dataJawabanMatkul.jawabanPertanyaanQuiz[i*10+j] == dataMatkul.jawabanPertanyaanQuiz[i*10+j] { //kalo jawaban siswa sama dengan kunci jawaban yang ada di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode kunci jawaban pertanyaan quiz)
+									dataJawabanMatkul.nilaiPertanyaanQuiz[i*10+j] += dataMatkul.bobotNilaiQuiz[i*10+j] //maka nilai jawaban siswa di array nilaiPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan quiz) ditambahkan dengan bobot nilai quiz yang ada di array bobotNilaiQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode bobot nilai quiz)
+								} else { //kalo jawabannya ga sama kaya kunci jawaban
+									dataJawabanMatkul.nilaiPertanyaanQuiz[i*10+j] += 0 //maka nilai jawaban siswa di array nilaiPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan quiz) ditambahkan dengan 0
+								}
+								totalPoinSoalQuiz += dataMatkul.bobotNilaiQuiz[i*10+j]                //hitung total poin soal quiz
+								totalPoinJawabanQuiz += dataJawabanMatkul.nilaiPertanyaanQuiz[i*10+j] //hitung total poin jawaban quiz siswa
+							}
+
+							dataJawabanMatkul.nilaiQuiz[i] = float64(totalPoinJawabanQuiz) / float64(totalPoinSoalQuiz) * 100 //perhitungan nilai akhir quiz siswa, disimpan di array nilaiQuiz indeks ke i (i = kode quiz)
+							fmt.Println("Nilai Quiz Anda :", dataJawabanMatkul.nilaiQuiz[i])                                  //tampilkan nilai quiz
+							fmt.Println()
+							goto MenuMatkulMatematika
+						}
+					}
+				}
+
+			case 3: //tampilan jika memilih menu 3. Forum matkul
+
+			case 4: //tampilan jika memilih menu 4. Tampilkan nilai rata-rata
+				fmt.Println("Nilai Rata-Rata Tugas :") //hitungnya penjumlahan semua nilai tugas dibagi jumlah tugas yang ada
+				//data semua nilai tugas ada di dataJawabanMatkul.nilaiTugas, jumlah tugas dapetnya dari len(dataMatkul.namaTugas)
+				fmt.Println("Nilai Rata-Rata Quiz :") //hitungnya penjumlahan semua nilai quiz dibagi jumlah quiz yang ada
+				//data semua nilai quiz ada di dataJawabanMatkul.nilaiQuiz, jumlah quiz dapetnya dari len(dataMatkul.namaQuiz)
+				fmt.Println("Nilai Rata-Rata Mata Kuliah :") //dapetnya dari (nilai rata2 tugas + nilai rata2 quiz) / 2
+
+			case 5: //tampilan jika memilih menu 5. Kembali ke home
+				fmt.Println()
+				goto MenuHomeMurid
+
+			default: //tampilan jika memilih selain menu 1-5
+				fmt.Println("Pilihan yang dimasukkan tidak valid")
+				fmt.Println()
+				goto MenuMatkulMatematika
+			}
+
+		case 2: //tampilan jika memilih menu 2. IPA
+			dataJawabanMatkul = &jawabanMatkulIPA
+			dataMatkul = &matkulIPA
+		MenuMatkulIPA:
+			fmt.Println("1. Kerjakan Tugas")
+			fmt.Println("2. Kerjakan Quiz")
+			fmt.Println("3. Forum matkul")
+			fmt.Println("4. Tampilkan nilai rata-rata")
+			fmt.Println("5. Kembali ke home")
+			fmt.Print("Masukkan pilihan anda : ")
+			fmt.Scan(&pilihanMenuMatkul)
+			fmt.Println()
+
+			switch pilihanMenuMatkul {
+			case 1: //tampilan jika memilih menu 1. Kerjakan Tugas
+
+			case 2: //tampilan jika memilih menu 2. Kerjakan Quiz
+				var namaQuiz string
+				var totalPoinSoalQuiz int
+				var totalPoinJawabanQuiz int
+				if isEmpty(dataMatkul.namaQuiz[:]) {
+					fmt.Println("Quiz Tidak Tersedia!")
+					fmt.Println("Hubungi guru anda untuk menambahkan quiz")
+					fmt.Println()
+					goto MenuMatkulIPA
+				} else {
+					fmt.Println("List Quiz Tersededia :")
+					tampilkan(dataMatkul.namaQuiz[:])
+
+					fmt.Print("Masukkan nama quiz yang ingin dikerjakan : ")
+					fmt.Scan(&namaQuiz)
+					fmt.Println()
+					for i := 0; i < SIZE; i++ {
+						if dataMatkul.namaQuiz[i] == namaQuiz { //kalo nama quiz yang diinputkan sama dengan nama quiz yang ada di array namaQuiz, maka lakukan pengerjaan quiz
+							totalPoinSoalQuiz = 0    //ini nilai poin total soal quiz
+							totalPoinJawabanQuiz = 0 //ini nilai poin total jawaban quiz siswa
+
+							for j := 0; j < 10; j++ {
+								fmt.Println(dataMatkul.pertanyaanQuiz[i*10+j])                                                   //tampilkan pertanyaan quiz di array pertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode pertanyaan quiz)
+								fmt.Scan(&dataJawabanMatkul.jawabanPertanyaanQuiz[i*10+j])                                       //input jawaban siswa, simpan di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode jawaban pertanyaan quiz)
+								if dataJawabanMatkul.jawabanPertanyaanQuiz[i*10+j] == dataMatkul.jawabanPertanyaanQuiz[i*10+j] { //kalo jawaban siswa sama dengan kunci jawaban yang ada di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode kunci jawaban pertanyaan quiz)
+									dataJawabanMatkul.nilaiPertanyaanQuiz[i*10+j] += dataMatkul.bobotNilaiQuiz[i*10+j] //maka nilai jawaban siswa di array nilaiPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan quiz) ditambahkan dengan bobot nilai quiz yang ada di array bobotNilaiQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode bobot nilai quiz)
+								} else { //kalo jawabannya ga sama kaya kunci jawaban
+									dataJawabanMatkul.nilaiPertanyaanQuiz[i*10+j] += 0 //maka nilai jawaban siswa di array nilaiPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan quiz) ditambahkan dengan 0
+								}
+								totalPoinSoalQuiz += dataMatkul.bobotNilaiQuiz[i*10+j]                //hitung total poin soal quiz
+								totalPoinJawabanQuiz += dataJawabanMatkul.nilaiPertanyaanQuiz[i*10+j] //hitung total poin jawaban quiz siswa
+							}
+
+							dataJawabanMatkul.nilaiQuiz[i] = float64(totalPoinJawabanQuiz) / float64(totalPoinSoalQuiz) * 100 //perhitungan nilai akhir quiz siswa, disimpan di array nilaiQuiz indeks ke i (i = kode quiz)
+							fmt.Println("Nilai Quiz Anda :", dataJawabanMatkul.nilaiQuiz[i])                                  //tampilkan nilai quiz
+							fmt.Println()
+							goto MenuMatkulIPA
+						}
+					}
+				}
+
+			case 3: //tampilan jika memilih menu 3. Forum matkul
+
+			case 4: //tampilan jika memilih menu 4. Tampilkan nilai rata-rata
+				fmt.Println("Nilai Rata-Rata Tugas :") //hitungnya penjumlahan semua nilai tugas dibagi jumlah tugas yang ada
+				//data semua nilai tugas ada di dataJawabanMatkul.nilaiTugas, jumlah tugas dapetnya dari len(dataMatkul.namaTugas)
+				fmt.Println("Nilai Rata-Rata Quiz :") //hitungnya penjumlahan semua nilai quiz dibagi jumlah quiz yang ada
+				//data semua nilai quiz ada di dataJawabanMatkul.nilaiQuiz, jumlah quiz dapetnya dari len(dataMatkul.namaQuiz)
+				fmt.Println("Nilai Rata-Rata Mata Kuliah :") //dapetnya dari (nilai rata2 tugas + nilai rata2 quiz) / 2
+
+			case 5: //tampilan jika memilih menu 5. Kembali ke home
+				fmt.Println()
+				goto MenuHomeMurid
+
+			default: //tampilan jika memilih selain menu 1-5
+				fmt.Println("Pilihan yang dimasukkan tidak valid")
+				fmt.Println()
+				goto MenuMatkulIPA
+			}
+
+		case 3: //tampilan jika memilih menu 3. Bahasa Indonesia
+			dataJawabanMatkul = &jawabanMatkulBIndo
+			dataMatkul = &matkulBIndo
+		MenuMatkulBIndo:
+			fmt.Println("1. Kerjakan Tugas")
+			fmt.Println("2. Kerjakan Quiz")
+			fmt.Println("3. Forum matkul")
+			fmt.Println("4. Tampilkan nilai rata-rata")
+			fmt.Println("5. Kembali ke home")
+			fmt.Print("Masukkan pilihan anda : ")
+			fmt.Scan(&pilihanMenuMatkul)
+			fmt.Println()
+
+			switch pilihanMenuMatkul {
+			case 1: //tampilan jika memilih menu 1. Kerjakan Tugas
+
+			case 2: //tampilan jika memilih menu 2. Kerjakan Quiz
+				var namaQuiz string
+				var totalPoinSoalQuiz int
+				var totalPoinJawabanQuiz int
+				if isEmpty(dataMatkul.namaQuiz[:]) {
+					fmt.Println("Quiz Tidak Tersedia!")
+					fmt.Println("Hubungi guru anda untuk menambahkan quiz")
+					fmt.Println()
+					goto MenuMatkulBIndo
+				} else {
+					fmt.Println("List Quiz Tersedia :")
+					tampilkan(dataMatkul.namaQuiz[:])
+
+					fmt.Print("Masukkan nama quiz yang ingin dikerjakan : ")
+					fmt.Scan(&namaQuiz)
+					fmt.Println()
+					for i := 0; i < SIZE; i++ {
+						if dataMatkul.namaQuiz[i] == namaQuiz { //kalo nama quiz yang diinputkan sama dengan nama quiz yang ada di array namaQuiz, maka lakukan pengerjaan quiz
+							totalPoinSoalQuiz = 0    //ini nilai poin total soal quiz
+							totalPoinJawabanQuiz = 0 //ini nilai poin total jawaban quiz siswa
+
+							for j := 0; j < 10; j++ {
+								fmt.Println(dataMatkul.pertanyaanQuiz[i*10+j])                                                   //tampilkan pertanyaan quiz di array pertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode pertanyaan quiz)
+								fmt.Scan(&dataJawabanMatkul.jawabanPertanyaanQuiz[i*10+j])                                       //input jawaban siswa, simpan di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode jawaban pertanyaan quiz)
+								if dataJawabanMatkul.jawabanPertanyaanQuiz[i*10+j] == dataMatkul.jawabanPertanyaanQuiz[i*10+j] { //kalo jawaban siswa sama dengan kunci jawaban yang ada di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode kunci jawaban pertanyaan quiz)
+									dataJawabanMatkul.nilaiPertanyaanQuiz[i*10+j] += dataMatkul.bobotNilaiQuiz[i*10+j] //maka nilai jawaban siswa di array nilaiPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan quiz) ditambahkan dengan bobot nilai quiz yang ada di array bobotNilaiQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode bobot nilai quiz)
+								} else { //kalo jawabannya ga sama kaya kunci jawaban
+									dataJawabanMatkul.nilaiPertanyaanQuiz[i*10+j] += 0 //maka nilai jawaban siswa di array nilaiPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan quiz) ditambahkan dengan 0
+								}
+								totalPoinSoalQuiz += dataMatkul.bobotNilaiQuiz[i*10+j]                //hitung total poin soal quiz
+								totalPoinJawabanQuiz += dataJawabanMatkul.nilaiPertanyaanQuiz[i*10+j] //hitung total poin jawaban quiz siswa
+							}
+
+							dataJawabanMatkul.nilaiQuiz[i] = float64(totalPoinJawabanQuiz) / float64(totalPoinSoalQuiz) * 100 //perhitungan nilai akhir quiz siswa, disimpan di array nilaiQuiz indeks ke i (i = kode quiz)
+							fmt.Println("Nilai Quiz Anda :", dataJawabanMatkul.nilaiQuiz[i])                                  //tampilkan nilai quiz
+							fmt.Println()
+							goto MenuMatkulBIndo
+						}
+					}
+				}
+
+			case 3: //tampilan jika memilih menu 3. Forum matkul
+
+			case 4: //tampilan jika memilih menu 4. Tampilkan nilai rata-rata
+				fmt.Println("Nilai Rata-Rata Tugas :") //hitungnya penjumlahan semua nilai tugas dibagi jumlah tugas yang ada
+				//data semua nilai tugas ada di dataJawabanMatkul.nilaiTugas, jumlah tugas dapetnya dari len(dataMatkul.namaTugas)
+				fmt.Println("Nilai Rata-Rata Quiz :") //hitungnya penjumlahan semua nilai quiz dibagi jumlah quiz yang ada
+				//data semua nilai quiz ada di dataJawabanMatkul.nilaiQuiz, jumlah quiz dapetnya dari len(dataMatkul.namaQuiz)
+				fmt.Println("Nilai Rata-Rata Mata Kuliah :") //dapetnya dari (nilai rata2 tugas + nilai rata2 quiz) / 2
+
+			case 5: //tampilan jika memilih menu 5. Kembali ke home
+				fmt.Println()
+				goto MenuHomeMurid
+
+			default: //tampilan jika memilih selain menu 1-5
+				fmt.Println("Pilihan yang dimasukkan tidak valid")
+				fmt.Println()
+				goto MenuMatkulBIndo
+			}
+		case 4: //tampilan jika memilih menu 4. Keluar
+			fmt.Println()
+			goto MenuLogin
+
+		default: //tampilan jika memilih selain menu 1-4
+			fmt.Println("Pilihan yang dimasukkan tidak valid")
+			fmt.Println()
+			goto MenuHomeMurid
+		}
+	case 3: //tampilan jika memilih menu 3. Keluar
+		fmt.Println("Terima kasih telah menggunakan LMS")
+
+	default: //tampilan jika memilih selain menu 1-3
 		fmt.Println("Pilihan yang dimasukkan tidak valid")
 		fmt.Println()
 		goto MenuLogin
