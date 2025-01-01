@@ -24,6 +24,7 @@ type Matkul struct { //hanya berisi rincian matkul
 	jawabanPertanyaanQuiz  [SIZE]string
 	bobotNilaiTugas        [SIZE]int
 	bobotNilaiQuiz         [SIZE]int
+	forumMatkul            [SIZE]string
 }
 
 type jawabanMatkul struct { //hanya berisi jawaban murid
