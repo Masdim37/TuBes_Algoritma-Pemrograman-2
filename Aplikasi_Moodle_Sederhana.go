@@ -153,7 +153,44 @@ MenuLogin:
 
 		switch pilihanMenu {
 		case 1: //tampilan jika memilih menu 1. Tambah Tugas
+			var tempNamaTugas string
+			var tempPertanyaan string
+			for i := 0; i < SIZE; i++ {
+				if dataMatkul.namaTugas[i] == "" { // Cek apakah ada data kosong pada array namaTugas
+					fmt.Print("Masukkan nama Tugas: ")
+					fmt.Scan(&dataMatkul.namaTugas[i])
+					tempNamaTugas = dataMatkul.namaTugas[i]
+					break
+				}
+			}
 
+			fmt.Println("!! PERHATIAN !!")
+			fmt.Println("Jumlah pertanyaan tugas yang bisa dimasukkan adalah 10 pertanyaan.")
+			fmt.Println("Masukkan 'stop' untuk berhenti apabila ingin menambahkan pertanyaan tugas kurang dari 10.")
+
+			for i := 0; i < SIZE; i++ {
+				if dataMatkul.namaTugas[i] == tempNamaTugas {
+					for j := 0; j < 10; j++ {
+						fmt.Print("Masukkan pertanyaan ke-", j+1, ": ")
+						fmt.Scan(&tempPertanyaan)
+
+						if tempPertanyaan == "stop" { // Berhenti jika input "stop"
+							break
+						}
+
+						dataMatkul.pertanyaanTugas[i*10+j] = tempPertanyaan // Masukkan pertanyaan ke array pertanyaanTugas
+
+						fmt.Print("Masukkan kunci jawaban pertanyaan ke-", j+1, ": ") // Input jawaban
+						fmt.Scan(&dataMatkul.jawabanPertanyaanTugas[i*10+j])          // Simpan kunci jawaban
+
+						fmt.Print("Masukkan bobot nilai pertanyaan ke-", j+1, ": ") // Input bobot nilai
+						fmt.Scan(&dataMatkul.bobotNilaiTugas[i*10+j])               // Simpan bobot nilai
+					}
+				}
+			}
+			fmt.Println()
+			goto MenuGuru
+			
 		case 2: //tampilan jika memilih menu 2. Tambah Quiz
 			var tempNamaQuiz string
 			var tempPertanyaan string
