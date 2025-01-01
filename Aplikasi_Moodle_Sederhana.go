@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
 
 const SIZE int = 100
 
@@ -37,6 +42,12 @@ type jawabanMatkul struct { //hanya berisi jawaban murid
 	nilaiMatkul            float64
 }
 
+type forum struct {
+	pengirim   [SIZE]string
+	waktuKirim [SIZE]string
+	pesan      [SIZE]string
+}
+
 type ArrMurid [SIZE]Murid //membuat tipe data ArrMurid yang merupakan array struct
 type ArrGuru [SIZE]Guru   //membuat tipe data ArrGuru yang merupakan array struct
 
@@ -51,6 +62,10 @@ var matkulBIndo Matkul
 var jawabanMatkulMatematika jawabanMatkul //membuat array bernama matkulMatematika dengan tipe data ArrMatkul (array struct)
 var jawabanMatkulIPA jawabanMatkul        //membuat array bernama matkulIPA dengan tipe data ArrMatkul (array struct)
 var jawabanMatkulBIndo jawabanMatkul      //membuat array bernama matkulBIndo dengan tipe data ArrMatkul (array struct)
+
+var forumMatematika forum
+var forumIPA forum
+var forumBIndo forum
 
 func isEmpty(arrData []string) bool { //function untuk cek apakah array kosong atau tidak
 	var cek bool = true
@@ -74,11 +89,20 @@ func tampilkan(arrData []string) { //prosedur untuk menampilkan isi array
 	}
 }
 
+// Fungsi untuk membaca input dengan spasi
+func bacaInput(prompt string) string {
+	fmt.Print(prompt)
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+	return strings.TrimSpace(input)
+}
+
 func main() {
 	var dataMurid *Murid
 	var dataGuru *Guru
 	var dataMatkul *Matkul
 	var dataJawabanMatkul *jawabanMatkul
+	var dataForum *forum
 	var pilihanLogin int
 	var username, password string
 	var pilihanMenu, pilihanMenuMatkul int
@@ -123,10 +147,13 @@ MenuLogin:
 			fmt.Println("Mata kuliah yang anda ajar :", dataGuru.namaMatkul)
 			if dataGuru.nama == "Dhimas Hafizh" {
 				dataMatkul = &matkulMatematika
+				dataForum = &forumMatematika
 			} else if dataGuru.nama == "Satrio Wibowo" {
 				dataMatkul = &matkulIPA
+				dataForum = &forumIPA
 			} else if dataGuru.nama == "Azaria Nanda" {
 				dataMatkul = &matkulBIndo
+				dataForum = &forumBIndo
 			}
 		} else {
 			fmt.Println()
@@ -190,7 +217,7 @@ MenuLogin:
 			}
 			fmt.Println()
 			goto MenuGuru
-			
+
 		case 2: //tampilan jika memilih menu 2. Tambah Quiz
 			var tempNamaQuiz string
 			var tempPertanyaan string
@@ -285,6 +312,17 @@ MenuLogin:
 			goto MenuGuru
 
 		case 9: //tampilan jika memilih menu 9. Forum Mata Kuliah
+			for i := 0; i < SIZE; i++ {
+				if dataForum.pengirim[i] == "" {
+					fmt.Println("Masukkan nama pengirim : ")
+					dataForum.pengirim[i] = bacaInput("Masukkan nama pengirim : ")
+					fmt.Println("Masukkan waktu pengiriman : ")
+					dataForum.waktuKirim[i] = bacaInput("Masukkan waktu pengiriman : ")
+					fmt.Println("Masukkan pesan : ")
+					dataForum.pesan[i] = bacaInput("Masukkan pesan : ")
+					break
+				}
+			}
 
 		case 10: //tampilan jika memilih menu 10. Lihat List Nilai Murid
 
@@ -389,6 +427,17 @@ MenuLogin:
 				}
 
 			case 3: //tampilan jika memilih menu 3. Forum matkul
+				for i := 0; i < SIZE; i++ {
+					if dataForum.pengirim[i] == "" {
+						fmt.Println("Masukkan nama pengirim : ")
+						dataForum.pengirim[i] = bacaInput("Masukkan nama pengirim : ")
+						fmt.Println("Masukkan waktu pengiriman : ")
+						dataForum.waktuKirim[i] = bacaInput("Masukkan waktu pengiriman : ")
+						fmt.Println("Masukkan pesan : ")
+						dataForum.pesan[i] = bacaInput("Masukkan pesan : ")
+						break
+					}
+				}
 
 			case 4: //tampilan jika memilih menu 4. Tampilkan nilai rata-rata
 				fmt.Println("Nilai Rata-Rata Tugas :") //hitungnya penjumlahan semua nilai tugas dibagi jumlah tugas yang ada
@@ -465,6 +514,17 @@ MenuLogin:
 				}
 
 			case 3: //tampilan jika memilih menu 3. Forum matkul
+				for i := 0; i < SIZE; i++ {
+					if dataForum.pengirim[i] == "" {
+						fmt.Println("Masukkan nama pengirim : ")
+						dataForum.pengirim[i] = bacaInput("Masukkan nama pengirim : ")
+						fmt.Println("Masukkan waktu pengiriman : ")
+						dataForum.waktuKirim[i] = bacaInput("Masukkan waktu pengiriman : ")
+						fmt.Println("Masukkan pesan : ")
+						dataForum.pesan[i] = bacaInput("Masukkan pesan : ")
+						break
+					}
+				}
 
 			case 4: //tampilan jika memilih menu 4. Tampilkan nilai rata-rata
 				fmt.Println("Nilai Rata-Rata Tugas :") //hitungnya penjumlahan semua nilai tugas dibagi jumlah tugas yang ada
@@ -541,6 +601,17 @@ MenuLogin:
 				}
 
 			case 3: //tampilan jika memilih menu 3. Forum matkul
+				for i := 0; i < SIZE; i++ {
+					if dataForum.pengirim[i] == "" {
+						fmt.Println("Masukkan nama pengirim : ")
+						dataForum.pengirim[i] = bacaInput("Masukkan nama pengirim : ")
+						fmt.Println("Masukkan waktu pengiriman : ")
+						dataForum.waktuKirim[i] = bacaInput("Masukkan waktu pengiriman : ")
+						fmt.Println("Masukkan pesan : ")
+						dataForum.pesan[i] = bacaInput("Masukkan pesan : ")
+						break
+					}
+				}
 
 			case 4: //tampilan jika memilih menu 4. Tampilkan nilai rata-rata
 				fmt.Println("Nilai Rata-Rata Tugas :") //hitungnya penjumlahan semua nilai tugas dibagi jumlah tugas yang ada
