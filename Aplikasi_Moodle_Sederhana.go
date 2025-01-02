@@ -199,6 +199,7 @@ func KerjakanTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []strin
 				if ArrPertanyaanTugasQuiz[i*10+j] != "" {
 					fmt.Println(ArrPertanyaanTugasQuiz[i*10+j])                                       //tampilkan pertanyaan tugas/quiz di array ArrPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
 					ArrInputJawabanPertanyaanTugasQuiz[i*10+j] = bacaInput(fmt.Sprintf("Jawaban : ")) //input jawaban siswa, simpan di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
+					fmt.Println()
 				}
 
 				if ArrInputJawabanPertanyaanTugasQuiz[i*10+j] == ArrJawabanPertanyaanTugasQuiz[i*10+j] { //kalo jawaban siswa sama dengan kunci jawaban yang ada di array ArrJawabanPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz), maka
@@ -212,31 +213,34 @@ func KerjakanTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []strin
 
 			ArrNamaMurid[i] = namaMurid
 			ArrNilaiTugasQuiz[i] = float64(totalPoinJawabanTugasQuiz) / float64(totalPoinSoalTugasQuiz) * 100 //perhitungan nilai akhir tugas/quiz siswa, disimpan di array ArrNilaiTugasQuiz indeks ke i (i = kode tugas/quiz)
-			fmt.Println("Nilai Tugas/Quiz Anda :", ArrNilaiTugasQuiz[i])                                      //tampilkan nilai tugas/quiz
+			fmt.Println("Nilai", namaTugasQuiz, "Anda :", ArrNilaiTugasQuiz[i])                               //tampilkan nilai tugas/quiz
 		}
 	}
 }
 
 func TampilkanNilaiRataRataMatkul(ArrNamaTugas []string, ArrNamaQuiz []string, ArrNilaiTugas []float64, ArrNilaiQuiz []float64, NilaiMatkul float64) {
-	var jumlahTugas, RataRataTugas float64
-	var JumlahQuiz, RataRataQuiz float64
+	var jumlahTugas, jumlahQuiz float64
+	var totalNilaiTugas, totalNilaiQuiz float64
 
+	// Hitung jumlah tugas dan quiz
 	for i := 0; i < SIZE; i++ {
 		if ArrNamaTugas[i] != "" {
 			jumlahTugas++
+			totalNilaiTugas += ArrNilaiTugas[i]
 		} else if ArrNamaQuiz[i] != "" {
-			JumlahQuiz++
+			jumlahQuiz++
+			totalNilaiQuiz += ArrNilaiQuiz[i]
 		}
 	}
 
-	for i := 0; i < SIZE; i++ {
-		if ArrNilaiTugas[i] != 0 && ArrNilaiQuiz[i] != 0 {
-			RataRataTugas += (ArrNilaiTugas[i] / jumlahTugas)
-			RataRataQuiz += (ArrNilaiQuiz[i] / JumlahQuiz)
-		}
-	}
+	// Hitung rata-rata tugas dan quiz
+	RataRataTugas := totalNilaiTugas / jumlahTugas
+	RataRataQuiz := totalNilaiQuiz / jumlahQuiz
 
+	// Hitung nilai mata kuliah (rata-rata dari rata-rata tugas dan quiz)
 	NilaiMatkul = (RataRataTugas + RataRataQuiz) / 2
+
+	// Tampilkan hasil
 	fmt.Println("Nilai Rata-Rata Tugas :", RataRataTugas)
 	fmt.Println("Nilai Rata-Rata Quiz :", RataRataQuiz)
 	fmt.Println("Nilai Rata-Rata Mata Kuliah :", NilaiMatkul)
@@ -620,6 +624,7 @@ MenuLogin:
 				} else { // Jika array namaTugas tidak kosong
 					fmt.Println("List Tugas Tersedia:")
 					tampilkan(dataMatkul.namaTugas[:])
+					fmt.Println()
 
 					KerjakanTugasQuiz(
 						dataMatkul.namaTugas[:],                     // Nama tugas
@@ -643,6 +648,7 @@ MenuLogin:
 				} else { //kalo array namaQuiz tidak kosong, tampilkan list quiz yang tersedia dan lakukan pengerjaan quiz
 					fmt.Println("List Quiz Tersededia :")
 					tampilkan(dataMatkul.namaQuiz[:])
+					fmt.Println()
 
 					KerjakanTugasQuiz(dataMatkul.namaQuiz[:], dataMatkul.pertanyaanQuiz[:], dataJawabanMatkul.jawabanPertanyaanQuiz[:], dataMatkul.jawabanPertanyaanQuiz[:], dataJawabanMatkul.nilaiPertanyaanQuiz[:], dataMatkul.bobotNilaiQuiz[:], dataJawabanMatkul.namaMuridQuiz[:], dataMurid.nama, dataJawabanMatkul.nilaiQuiz[:])
 				}
@@ -705,6 +711,7 @@ MenuLogin:
 				} else { // Jika array namaTugas tidak kosong
 					fmt.Println("List Tugas Tersedia:")
 					tampilkan(dataMatkul.namaTugas[:])
+					fmt.Println()
 
 					KerjakanTugasQuiz(
 						dataMatkul.namaTugas[:],                     // Nama tugas
@@ -728,6 +735,7 @@ MenuLogin:
 				} else { //kalo array namaQuiz tidak kosong, tampilkan list quiz yang tersedia dan lakukan pengerjaan quiz
 					fmt.Println("List Quiz Tersededia :")
 					tampilkan(dataMatkul.namaQuiz[:])
+					fmt.Println()
 
 					KerjakanTugasQuiz(dataMatkul.namaQuiz[:], dataMatkul.pertanyaanQuiz[:], dataJawabanMatkul.jawabanPertanyaanQuiz[:], dataMatkul.jawabanPertanyaanQuiz[:], dataJawabanMatkul.nilaiPertanyaanQuiz[:], dataMatkul.bobotNilaiQuiz[:], dataJawabanMatkul.namaMuridQuiz[:], dataMurid.nama, dataJawabanMatkul.nilaiQuiz[:])
 				}
@@ -790,6 +798,7 @@ MenuLogin:
 				} else { // Jika array namaTugas tidak kosong
 					fmt.Println("List Tugas Tersedia:")
 					tampilkan(dataMatkul.namaTugas[:])
+					fmt.Println()
 
 					KerjakanTugasQuiz(
 						dataMatkul.namaTugas[:],                     // Nama tugas
@@ -813,6 +822,7 @@ MenuLogin:
 				} else { //kalo array namaQuiz tidak kosong, tampilkan list quiz yang tersedia dan lakukan pengerjaan quiz
 					fmt.Println("List Quiz Tersededia :")
 					tampilkan(dataMatkul.namaQuiz[:])
+					fmt.Println()
 
 					KerjakanTugasQuiz(dataMatkul.namaQuiz[:], dataMatkul.pertanyaanQuiz[:], dataJawabanMatkul.jawabanPertanyaanQuiz[:], dataMatkul.jawabanPertanyaanQuiz[:], dataJawabanMatkul.nilaiPertanyaanQuiz[:], dataMatkul.bobotNilaiQuiz[:], dataJawabanMatkul.namaMuridQuiz[:], dataMurid.nama, dataJawabanMatkul.nilaiQuiz[:])
 				}
