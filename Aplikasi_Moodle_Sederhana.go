@@ -93,28 +93,32 @@ func tampilkan(arrData []string) {
 	}
 }
 
-// Function untuk membaca input dengan spasi
+// Fungsi bacaInput membaca input dari terminal dengan prompt tertentu
 func bacaInput(prompt string) string {
-	fmt.Print(prompt)
+	fmt.Print(prompt) // Menampilkan prompt
+	//os.Stdout.Sync()               // Flush output buffer secara manual
 	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('\n')
-	return strings.TrimSpace(input) // Menghapus spasi dan newline
+	input, _ := reader.ReadString('\n') // Membaca input hingga newline
+	return strings.TrimSpace(input)     // Menghapus spasi atau newline di awal/akhir
 }
 
 // function untuk input pertanyaan tugas dan quiz
 func InputPertanyaanTugasQuiz(ArrNamaTugasQuiz []string, namaTugasQuiz string, ArrPertanyaanTugasQuiz []string, ArrJawabanPertanyaanTugasQuiz []string, ArrBobotNilaiPertanyaanTugasQuiz []int) {
 	var tempPertanyaan string
+loopInputPertanyaan:
 	for i := 0; i < SIZE; i++ {
 		if ArrNamaTugasQuiz[i] == namaTugasQuiz {
 			for j := 0; j < 10; j++ {
-				tempPertanyaan = bacaInput(fmt.Sprintf("Masukkan pertanyaan ke-%d : ", j+1))
 
-				if tempPertanyaan == "stop" { // Berhenti jika input "stop"
-					break
+				tempPertanyaan = bacaInput(fmt.Sprintf("Masukkan pertanyaan ke-%d : ", j+1)) // Input pertanyaan
+
+				if strings.ToLower(tempPertanyaan) == "stop" { // Berhenti jika input "stop"
+					break loopInputPertanyaan
 				}
 
 				ArrPertanyaanTugasQuiz[i*10+j] = tempPertanyaan // Masukkan pertanyaan ke array ArrPertanyaanTugasQuiz
 
+				// Input jawaban
 				ArrJawabanPertanyaanTugasQuiz[i*10+j] = bacaInput(fmt.Sprintf("Masukkan kunci jawaban pertanyaan ke-%d : ", j+1)) // Input jawaban
 
 				fmt.Printf("Masukkan bobot nilai pertanyaan ke-%d : ", j+1) // Input bobot nilai
@@ -366,7 +370,7 @@ MenuLogin:
 			var tempNamaTugas string
 			for i := 0; i < SIZE; i++ {
 				if dataMatkul.namaTugas[i] == "" {
-					dataMatkul.namaTugas[i] = bacaInput(fmt.Sprintf("Masukkan nama Tugas : "))
+					tempNamaTugas = bacaInput("Masukkan nama Tugas : ") // Prompt kosong karena sudah ditampilkan sebelumnya
 					tempNamaTugas = dataMatkul.namaTugas[i]
 					break
 				}
@@ -860,4 +864,3 @@ MenuLogin:
 		goto MenuLogin
 	}
 }
-
