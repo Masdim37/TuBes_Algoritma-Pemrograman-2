@@ -161,10 +161,14 @@ func EditTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []string, A
 	for i := 0; i < SIZE; i++ {
 		if ArrNamaTugasQuiz[i] == pilihanEditTugasQuiz {
 			for j := 0; j < 10; j++ {
-				fmt.Println("Pertanyaan ke-", j+1)
-				fmt.Println("Pertanyaan : ", ArrPertanyaanTugasQuiz[i*10+j])
-				fmt.Println("Kunci Jawaban : ", ArrJawabanPertanyaanTugasQuiz[i*10+j])
-				fmt.Println("Bobot Nilai : ", ArrBobotNilaiPertanyaanTugasQuiz[i*10+j])
+				if ArrPertanyaanTugasQuiz[i*10+j] == "" {
+					break
+				} else if ArrPertanyaanTugasQuiz[i*10+j] != "" {
+					fmt.Println("Pertanyaan ke-", j+1)
+					fmt.Println("Pertanyaan : ", ArrPertanyaanTugasQuiz[i*10+j])
+					fmt.Println("Kunci Jawaban : ", ArrJawabanPertanyaanTugasQuiz[i*10+j])
+					fmt.Println("Bobot Nilai : ", ArrBobotNilaiPertanyaanTugasQuiz[i*10+j])
+				}
 			}
 			fmt.Println()
 			fmt.Print("Masukkan nomor pertanyaan yang ingin diubah : ")
@@ -192,8 +196,11 @@ func KerjakanTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []strin
 			totalPoinJawabanTugasQuiz = 0 //ini nilai poin total jawaban tugas/quiz siswa
 
 			for j := 0; j < 10; j++ {
-				fmt.Println(ArrPertanyaanTugasQuiz[i*10+j])                                              //tampilkan pertanyaan tugas/quiz di array ArrPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
-				ArrInputJawabanPertanyaanTugasQuiz[i*10+j] = bacaInput(fmt.Sprintf("Jawaban : "))        //input jawaban siswa, simpan di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
+				if ArrPertanyaanTugasQuiz[i*10+j] != "" {
+					fmt.Println(ArrPertanyaanTugasQuiz[i*10+j])                                       //tampilkan pertanyaan tugas/quiz di array ArrPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
+					ArrInputJawabanPertanyaanTugasQuiz[i*10+j] = bacaInput(fmt.Sprintf("Jawaban : ")) //input jawaban siswa, simpan di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
+				}
+
 				if ArrInputJawabanPertanyaanTugasQuiz[i*10+j] == ArrJawabanPertanyaanTugasQuiz[i*10+j] { //kalo jawaban siswa sama dengan kunci jawaban yang ada di array ArrJawabanPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz), maka
 					ArrInputNilaiPertanyaanTugasQuiz[i*10+j] += ArrBobotNilaiPertanyaanTugasQuiz[i*10+j] //maka nilai jawaban siswa di array ArrInputNilaiPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan tugas/quiz) ditambahkan dengan bobot nilai quiz yang ada di array ArrBobotNilaiPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode bobot nilai tugas/quiz)
 				} else { //kalo jawabannya ga sama kaya kunci jawaban
