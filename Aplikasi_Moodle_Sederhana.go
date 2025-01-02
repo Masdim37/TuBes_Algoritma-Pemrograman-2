@@ -159,7 +159,7 @@ func EditTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []string, A
 	pilihanEditTugasQuiz = bacaInput(fmt.Sprintf("Masukkan nama tugas/quiz yang ingin diubah : "))
 	fmt.Println("List Pertanyaan Tugas/Quiz", pilihanEditTugasQuiz, " :")
 	for i := 0; i < SIZE; i++ {
-		if ArrNamaTugasQuiz[i] == pilihanEditTugasQuiz && ArrNamaTugasQuiz[i+1] != "" {
+		if ArrNamaTugasQuiz[i] == pilihanEditTugasQuiz {
 			for j := 0; j < 10; j++ {
 				fmt.Println("Pertanyaan ke-", j+1)
 				fmt.Println("Pertanyaan : ", ArrPertanyaanTugasQuiz[i*10+j])
