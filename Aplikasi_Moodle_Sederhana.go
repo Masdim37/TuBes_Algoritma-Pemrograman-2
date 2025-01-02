@@ -113,7 +113,7 @@ func InputPertanyaanTugasQuiz(ArrNamaTugasQuiz []string, namaTugasQuiz string, A
 					break
 				}
 
-				ArrPertanyaanTugasQuiz[i*10+j] = tempPertanyaan // Masukkan pertanyaan ke array pertanyaanTugas
+				ArrPertanyaanTugasQuiz[i*10+j] = tempPertanyaan // Masukkan pertanyaan ke array ArrPertanyaanTugasQuiz
 
 				ArrJawabanPertanyaanTugasQuiz[i*10+j] = bacaInput(fmt.Sprintf("Masukkan kunci jawaban pertanyaan ke-%d : ", j+1)) // Input jawaban
 
@@ -126,37 +126,37 @@ func InputPertanyaanTugasQuiz(ArrNamaTugasQuiz []string, namaTugasQuiz string, A
 
 // function untuk menghapus tugas quiz
 func HapusTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []string, ArrJawabanPertanyaanTugasQuiz []string, ArrBobotNilaiPertanyaanTugasQuiz []int) {
-	var pilihanHapusQuiz, konfirmasiHapusQuiz string
+	var pilihanHapusTugasQuiz, konfirmasiHapusTugasQuiz string
 
-	pilihanHapusQuiz = bacaInput(fmt.Sprintf("Masukkan nama quiz yang ingin dihapus : "))
-	fmt.Print("Apakah anda yakin ingin mengapus quiz ", pilihanHapusQuiz, " ? [y/n] : ")
-	fmt.Scan(&konfirmasiHapusQuiz)
-	if konfirmasiHapusQuiz == "y" || konfirmasiHapusQuiz == "Y" { //kalo masukin konfirmasi y, lakukan penghapusan
+	pilihanHapusTugasQuiz = bacaInput(fmt.Sprintf("Masukkan nama tugas/quiz yang ingin dihapus : "))
+	fmt.Print("Apakah anda yakin ingin mengapus tugas/quiz ", pilihanHapusTugasQuiz, " ? [y/n] : ")
+	fmt.Scan(&konfirmasiHapusTugasQuiz)
+	if konfirmasiHapusTugasQuiz == "y" || konfirmasiHapusTugasQuiz == "Y" { //kalo masukin konfirmasi y, lakukan penghapusan
 		for i := 0; i < SIZE; i++ {
-			if ArrNamaTugasQuiz[i] == pilihanHapusQuiz { //kalo nama quiz yang diinputkan sama dengan nama quiz yang ada di array namaQuiz, maka lakukan penghapusan
+			if ArrNamaTugasQuiz[i] == pilihanHapusTugasQuiz { //kalo nama tugas/quiz yang diinputkan sama dengan nama tugas/quiz yang ada di array ArrNamaTugasQuiz, maka lakukan penghapusan
 				ArrNamaTugasQuiz[i] = "" //hapus nama quiz
 				for j := 0; j < 10; j++ {
-					ArrPertanyaanTugasQuiz[i*10+j] = ""          //hapus pertanyaan quiz (i = kode quiz, 10 = maks pertanyaan, j = kode pertanyaan quiz)
-					ArrJawabanPertanyaanTugasQuiz[i*10+j] = ""   //hapus kunci jawaban quiz (i = kode quiz, 10 = maks pertanyaan, j = kode kunci jawaban pertanyaan quiz)
-					ArrBobotNilaiPertanyaanTugasQuiz[i*10+j] = 0 // Menghapus bobot nilai pertanyaan quiz (i = kode quiz, 10 = maks pertanyaan, j = kode bobot nilai pertanyaan quiz)
+					ArrPertanyaanTugasQuiz[i*10+j] = ""          //hapus pertanyaan tugas/quiz (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
+					ArrJawabanPertanyaanTugasQuiz[i*10+j] = ""   //hapus kunci jawaban tugas/quiz (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
+					ArrBobotNilaiPertanyaanTugasQuiz[i*10+j] = 0 // Menghapus bobot nilai pertanyaan tugas/quiz (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
 				}
-				fmt.Println("Quiz", pilihanHapusQuiz, "berhasil dihapus.") //tampilkan informasi bahwa quiz yang dipilih berhasil dihapus
-				break                                                      //keluar dari loop
+				fmt.Println("Tugas/Quiz", pilihanHapusTugasQuiz, "berhasil dihapus.") //tampilkan informasi bahwa tugas/quiz yang dipilih berhasil dihapus
+				break                                                                 //keluar dari loop
 			}
 		}
-	} else if konfirmasiHapusQuiz == "n" || konfirmasiHapusQuiz == "N" { //kalo masukin konfirmasi n, batalkan penghapusan
-		fmt.Print("Penghapusan quiz ", pilihanHapusQuiz, " dibatalkan") //tampilkan informasi bahwa quiz yang dipilih ngga jadi dihapus
+	} else if konfirmasiHapusTugasQuiz == "n" || konfirmasiHapusTugasQuiz == "N" { //kalo masukin konfirmasi n, batalkan penghapusan
+		fmt.Print("Penghapusan tugas/quiz ", pilihanHapusTugasQuiz, " dibatalkan") //tampilkan informasi bahwa tugas/quiz yang dipilih ngga jadi dihapus
 	}
 }
 
 func EditTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []string, ArrJawabanPertanyaanTugasQuiz []string, ArrBobotNilaiPertanyaanTugasQuiz []int) {
-	var pilihanEditQuiz string
-	var pilihanNomorEditQuiz int
+	var pilihanEditTugasQuiz string
+	var pilihanNomorEditTugasQuiz int
 
-	pilihanEditQuiz = bacaInput(fmt.Sprintf("Masukkan nama quiz yang ingin diubah : "))
-	fmt.Println("List Pertanyaan Quiz", pilihanEditQuiz, " :")
+	pilihanEditTugasQuiz = bacaInput(fmt.Sprintf("Masukkan nama tugas/quiz yang ingin diubah : "))
+	fmt.Println("List Pertanyaan Tugas/Quiz", pilihanEditTugasQuiz, " :")
 	for i := 0; i < SIZE; i++ {
-		if ArrNamaTugasQuiz[i] == pilihanEditQuiz {
+		if ArrNamaTugasQuiz[i] == pilihanEditTugasQuiz {
 			for j := 0; j < 10; j++ {
 				fmt.Println("Pertanyaan ke-", j+1)
 				fmt.Println("Pertanyaan : ", ArrPertanyaanTugasQuiz[i*10+j])
@@ -165,44 +165,44 @@ func EditTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []string, A
 			}
 			fmt.Println()
 			fmt.Print("Masukkan nomor pertanyaan yang ingin diubah : ")
-			fmt.Scan(&pilihanNomorEditQuiz)
-			ArrPertanyaanTugasQuiz[i*10+pilihanNomorEditQuiz-1] = bacaInput(fmt.Sprintf("Masukkan pertanyaan baru : "))
-			ArrJawabanPertanyaanTugasQuiz[i*10+pilihanNomorEditQuiz-1] = bacaInput(fmt.Sprintf("Masukkan kunci jawaban baru : "))
+			fmt.Scan(&pilihanNomorEditTugasQuiz)
+			ArrPertanyaanTugasQuiz[i*10+pilihanNomorEditTugasQuiz-1] = bacaInput(fmt.Sprintf("Masukkan pertanyaan baru : "))
+			ArrJawabanPertanyaanTugasQuiz[i*10+pilihanNomorEditTugasQuiz-1] = bacaInput(fmt.Sprintf("Masukkan kunci jawaban baru : "))
 			fmt.Print("Masukkan bobot nilai baru : ")
-			fmt.Scan(&ArrBobotNilaiPertanyaanTugasQuiz[i*10+pilihanNomorEditQuiz-1])
-			fmt.Println("Pertanyaan ke-", pilihanNomorEditQuiz, "pada kuis", pilihanEditQuiz, "berhasil diubah")
+			fmt.Scan(&ArrBobotNilaiPertanyaanTugasQuiz[i*10+pilihanNomorEditTugasQuiz-1])
+			fmt.Println("Pertanyaan ke-", pilihanNomorEditTugasQuiz, "pada tugas/quiz", pilihanEditTugasQuiz, "berhasil diubah")
 			break
 		}
 	}
 }
 
 func KerjakanTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []string, ArrInputJawabanPertanyaanTugasQuiz []string, ArrJawabanPertanyaanTugasQuiz []string, ArrInputNilaiPertanyaanTugasQuiz []int, ArrBobotNilaiPertanyaanTugasQuiz []int, ArrNamaMurid []string, namaMurid string, ArrNilaiTugasQuiz []float64) {
-	var namaQuiz string
-	var totalPoinSoalQuiz int
-	var totalPoinJawabanQuiz int
+	var namaTugasQuiz string
+	var totalPoinSoalTugasQuiz int
+	var totalPoinJawabanTugasQuiz int
 
-	namaQuiz = bacaInput(fmt.Sprintf("Masukkan nama quiz yang ingin dikerjakan : "))
+	namaTugasQuiz = bacaInput(fmt.Sprintf("Masukkan nama tugas/quiz yang ingin dikerjakan : "))
 	fmt.Println()
 	for i := 0; i < SIZE; i++ {
-		if ArrNamaTugasQuiz[i] == namaQuiz { //kalo nama quiz yang diinputkan sama dengan nama quiz yang ada di array namaQuiz, maka lakukan pengerjaan quiz
-			totalPoinSoalQuiz = 0    //ini nilai poin total soal quiz
-			totalPoinJawabanQuiz = 0 //ini nilai poin total jawaban quiz siswa
+		if ArrNamaTugasQuiz[i] == namaTugasQuiz { //kalo nama tugas/quiz yang diinputkan sama dengan nama tugas/quiz yang ada di array ArrNamaTugasQuiz, maka lakukan pengerjaan tugas/quiz
+			totalPoinSoalTugasQuiz = 0    //ini nilai poin total soal tugas/quiz
+			totalPoinJawabanTugasQuiz = 0 //ini nilai poin total jawaban tugas/quiz siswa
 
 			for j := 0; j < 10; j++ {
-				fmt.Println(ArrPertanyaanTugasQuiz[i*10+j])                                              //tampilkan pertanyaan quiz di array pertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode pertanyaan quiz)
-				ArrInputJawabanPertanyaanTugasQuiz[i*10+j] = bacaInput(fmt.Sprintf("Jawaban : "))        //input jawaban siswa, simpan di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode jawaban pertanyaan quiz)
-				if ArrInputJawabanPertanyaanTugasQuiz[i*10+j] == ArrJawabanPertanyaanTugasQuiz[i*10+j] { //kalo jawaban siswa sama dengan kunci jawaban yang ada di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode kunci jawaban pertanyaan quiz)
-					ArrInputNilaiPertanyaanTugasQuiz[i*10+j] += ArrBobotNilaiPertanyaanTugasQuiz[i*10+j] //maka nilai jawaban siswa di array nilaiPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan quiz) ditambahkan dengan bobot nilai quiz yang ada di array bobotNilaiQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode bobot nilai quiz)
+				fmt.Println(ArrPertanyaanTugasQuiz[i*10+j])                                              //tampilkan pertanyaan tugas/quiz di array ArrPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
+				ArrInputJawabanPertanyaanTugasQuiz[i*10+j] = bacaInput(fmt.Sprintf("Jawaban : "))        //input jawaban siswa, simpan di array jawabanPertanyaanQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz)
+				if ArrInputJawabanPertanyaanTugasQuiz[i*10+j] == ArrJawabanPertanyaanTugasQuiz[i*10+j] { //kalo jawaban siswa sama dengan kunci jawaban yang ada di array ArrJawabanPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode pertanyaan tugas/quiz), maka
+					ArrInputNilaiPertanyaanTugasQuiz[i*10+j] += ArrBobotNilaiPertanyaanTugasQuiz[i*10+j] //maka nilai jawaban siswa di array ArrInputNilaiPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan tugas/quiz) ditambahkan dengan bobot nilai quiz yang ada di array ArrBobotNilaiPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode bobot nilai tugas/quiz)
 				} else { //kalo jawabannya ga sama kaya kunci jawaban
-					ArrInputNilaiPertanyaanTugasQuiz[i*10+j] += 0 //maka nilai jawaban siswa di array nilaiPertanyaanQuiz indeks ke i*10+j (i = kode quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan quiz) ditambahkan dengan 0
+					ArrInputNilaiPertanyaanTugasQuiz[i*10+j] += 0 //maka nilai jawaban siswa di array ArrInputNilaiPertanyaanTugasQuiz indeks ke i*10+j (i = kode tugas/quiz, 10 = maks pertanyaan, j = kode nilai jawaban pertanyaan tugas/quiz) ditambahkan dengan 0
 				}
-				totalPoinSoalQuiz += ArrBobotNilaiPertanyaanTugasQuiz[i*10+j]    //hitung total poin soal quiz
-				totalPoinJawabanQuiz += ArrInputNilaiPertanyaanTugasQuiz[i*10+j] //hitung total poin jawaban quiz siswa
+				totalPoinSoalTugasQuiz += ArrBobotNilaiPertanyaanTugasQuiz[i*10+j]    //hitung total poin soal quiz
+				totalPoinJawabanTugasQuiz += ArrInputNilaiPertanyaanTugasQuiz[i*10+j] //hitung total poin jawaban quiz siswa
 			}
 
 			ArrNamaMurid[i] = namaMurid
-			ArrNilaiTugasQuiz[i] = float64(totalPoinJawabanQuiz) / float64(totalPoinSoalQuiz) * 100 //perhitungan nilai akhir quiz siswa, disimpan di array nilaiQuiz indeks ke i (i = kode quiz)
-			fmt.Println("Nilai Quiz Anda :", ArrNilaiTugasQuiz[i])                                  //tampilkan nilai quiz
+			ArrNilaiTugasQuiz[i] = float64(totalPoinJawabanTugasQuiz) / float64(totalPoinSoalTugasQuiz) * 100 //perhitungan nilai akhir tugas/quiz siswa, disimpan di array ArrNilaiTugasQuiz indeks ke i (i = kode tugas/quiz)
+			fmt.Println("Nilai Tugas/Quiz Anda :", ArrNilaiTugasQuiz[i])                                      //tampilkan nilai tugas/quiz
 		}
 	}
 }
