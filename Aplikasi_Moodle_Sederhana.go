@@ -112,6 +112,8 @@ loopInputPertanyaan:
 				tempPertanyaan = bacaInput(fmt.Sprintf("Masukkan pertanyaan ke-%d : ", j+1)) // Input pertanyaan
 
 				if strings.ToLower(tempPertanyaan) == "stop" { // Berhenti jika input "stop"
+					fmt.Println()
+					fmt.Println("Data", namaTugasQuiz, "berhasil ditambahkan") //tampilkan informasi bahwa data tugas/quiz telah disimpan
 					break loopInputPertanyaan
 				}
 
@@ -495,7 +497,7 @@ MenuLogin:
 			fmt.Println("-- Forum Mata Kuliah", dataGuru.namaMatkul, "--")
 			if !isEmpty(dataForum.pengirim[:]) { //kalo forum tidak kosong, tampilkan isi forum
 				for i := 0; i < SIZE; i++ {
-					if dataForum.pengirim[i+1] != "" {
+					if dataForum.pengirim[i] != "" {
 						fmt.Println("Postingan ke-", i+1)
 						fmt.Println("Pengirim : ", dataForum.pengirim[i])
 						fmt.Println("Waktu Kirim : ", dataForum.waktuKirim[i])
@@ -659,7 +661,7 @@ MenuLogin:
 				fmt.Println("-- Forum Mata Kuliah", dataGuru.namaMatkul, "--")
 				if !isEmpty(dataForum.pengirim[:]) { //kalo forum tidak kosong, tampilkan isi forum
 					for i := 0; i < SIZE; i++ {
-						if dataForum.pengirim[i+1] != "" {
+						if dataForum.pengirim[i] != "" {
 							fmt.Println("Postingan ke-", i+1)
 							fmt.Println("Pengirim : ", dataForum.pengirim[i])
 							fmt.Println("Waktu Kirim : ", dataForum.waktuKirim[i])
@@ -746,7 +748,7 @@ MenuLogin:
 				fmt.Println("-- Forum Mata Kuliah", dataGuru.namaMatkul, "--")
 				if !isEmpty(dataForum.pengirim[:]) { //kalo forum tidak kosong, tampilkan isi forum
 					for i := 0; i < SIZE; i++ {
-						if dataForum.pengirim[i+1] != "" {
+						if dataForum.pengirim[i] != "" {
 							fmt.Println("Postingan ke-", i+1)
 							fmt.Println("Pengirim : ", dataForum.pengirim[i])
 							fmt.Println("Waktu Kirim : ", dataForum.waktuKirim[i])
@@ -833,7 +835,7 @@ MenuLogin:
 				fmt.Println("-- Forum Mata Kuliah", dataGuru.namaMatkul, "--")
 				if !isEmpty(dataForum.pengirim[:]) { //kalo forum tidak kosong, tampilkan isi forum
 					for i := 0; i < SIZE; i++ {
-						if dataForum.pengirim[i+1] != "" {
+						if dataForum.pengirim[i] != "" {
 							fmt.Println("Postingan ke-", i+1)
 							fmt.Println("Pengirim : ", dataForum.pengirim[i])
 							fmt.Println("Waktu Kirim : ", dataForum.waktuKirim[i])
