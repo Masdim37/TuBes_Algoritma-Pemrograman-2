@@ -368,9 +368,9 @@ MenuLogin:
 		case 1: //tampilan jika memilih menu 1. Tambah Tugas
 			var tempNamaTugas string
 			for i := 0; i < SIZE; i++ {
-				if dataMatkul.namaQuiz[i] == "" { // Cek apakah ada data kosong pada array namaQuiz, jika indeks i kosong maka lakukan input
-					dataMatkul.namaQuiz[i] = bacaInput(fmt.Sprintf("Masukkan nama Tugas : ")) //input nama quiz
-					tempNamaTugas = dataMatkul.namaQuiz[i]
+				if dataMatkul.namaTugas[i] == "" { // Cek apakah ada data kosong pada array namaQuiz, jika indeks i kosong maka lakukan input
+					dataMatkul.namaTugas[i] = bacaInput(fmt.Sprintf("Masukkan nama Tugas : ")) //input nama quiz
+					tempNamaTugas = dataMatkul.namaTugas[i]
 					break
 				}
 			}
