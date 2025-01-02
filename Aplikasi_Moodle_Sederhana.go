@@ -124,7 +124,7 @@ func InputPertanyaanTugasQuiz(ArrNamaTugasQuiz []string, namaTugasQuiz string, A
 	}
 }
 
-// function untuk menghapus tugas quiz
+// function untuk menghapus tugas dan quiz
 func HapusTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []string, ArrJawabanPertanyaanTugasQuiz []string, ArrBobotNilaiPertanyaanTugasQuiz []int) {
 	var pilihanHapusTugasQuiz, konfirmasiHapusTugasQuiz string
 
@@ -256,6 +256,30 @@ func PostForumMatkul(ArrPengirim []string, ArrWaktuKirim []string, ArrPesan []st
 	}
 }
 
+func SelectionSortMurid(arrNilai []float64, arrNamaMurid []string) {
+	n := len(arrNilai)
+	for i := 0; i < n-1; i++ {
+		minIdx := i
+		for j := i + 1; j < n; j++ {
+			if arrNilai[j] < arrNilai[minIdx] {
+				minIdx = j
+			}
+		}
+		// Tukar nilai dan nama murid
+		arrNilai[i], arrNilai[minIdx] = arrNilai[minIdx], arrNilai[i]
+		arrNamaMurid[i], arrNamaMurid[minIdx] = arrNamaMurid[minIdx], arrNamaMurid[i]
+	}
+}
+
+func SequentialBinarySearchMurid(arrNilai []float64, arrNamaMurid []string, target float64) (int, string) {
+	for i := 0; i < len(arrNilai); i++ {
+		if arrNilai[i] == target {
+			return i, arrNamaMurid[i]
+		}
+	}
+	return -1, ""
+}
+
 func main() {
 	var dataMurid *Murid
 	var dataGuru *Guru
@@ -341,17 +365,16 @@ MenuLogin:
 		case 1: //tampilan jika memilih menu 1. Tambah Tugas
 			var tempNamaTugas string
 			for i := 0; i < SIZE; i++ {
-				if dataMatkul.namaTugas[i] == "" { // Cek apakah ada data kosong pada array namaTugas
-					fmt.Print("Masukkan nama Tugas: ")
-					fmt.Scan(&dataMatkul.namaTugas[i])
+				if dataMatkul.namaTugas[i] == "" {
+					dataMatkul.namaTugas[i] = bacaInput(fmt.Sprintf("Masukkan nama Tugas : "))
 					tempNamaTugas = dataMatkul.namaTugas[i]
 					break
 				}
 			}
 
 			fmt.Println("!! PERHATIAN !!")
-			fmt.Println("Jumlah pertanyaan tugas yang bisa dimasukkan adalah 10 pertanyaan.")
-			fmt.Println("Masukkan 'stop' untuk berhenti apabila ingin menambahkan pertanyaan tugas kurang dari 10.")
+			fmt.Println("Jumlah pertanyaan tugas yang bisa dimasukkan adalah 10 pertanyaan")
+			fmt.Println("Masukkan 'stop' untuk berhenti apabila ingin menambahkan pertanyaan tugas kurang dari 10")
 
 			InputPertanyaanTugasQuiz(dataMatkul.namaTugas[:], tempNamaTugas, dataMatkul.pertanyaanTugas[:], dataMatkul.jawabanPertanyaanTugas[:], dataMatkul.bobotNilaiTugas[:])
 
@@ -378,6 +401,18 @@ MenuLogin:
 			goto MenuGuru
 
 		case 3: //tampilan jika memilih menu 3. Edit Tugas
+			if isEmpty(dataMatkul.namaTugas[:]) {
+				fmt.Println("Tugas kosong!")
+				fmt.Println("Tambah tugas terlebih dahulu!")
+			} else {
+				fmt.Println("Data Tugas yang tersimpan:")
+				tampilkan(dataMatkul.namaTugas[:])
+				fmt.Println()
+
+				EditTugasQuiz(dataMatkul.namaTugas[:], dataMatkul.pertanyaanTugas[:], dataMatkul.jawabanPertanyaanTugas[:], dataMatkul.bobotNilaiTugas[:])
+			}
+			fmt.Println()
+			goto MenuGuru
 
 		case 4: //tampilan jika memilih menu 4. Edit Quiz
 			if isEmpty(dataMatkul.namaQuiz[:]) { //cek array namaQuiz kosong atau tidak
@@ -395,6 +430,17 @@ MenuLogin:
 			goto MenuGuru
 
 		case 5: //tampilan jika memilih menu 5. Hapus Tugas
+			if isEmpty(dataMatkul.namaTugas[:]) {
+				fmt.Println("Tugas kosong!")
+				fmt.Println("Tambah tugas terlebih dahulu!")
+			} else {
+				fmt.Println("Data Tugas yang tersimpan:")
+				tampilkan(dataMatkul.namaTugas[:])
+			}
+
+			HapusTugasQuiz(dataMatkul.namaTugas[:], dataMatkul.pertanyaanTugas[:], dataMatkul.jawabanPertanyaanTugas[:], dataMatkul.bobotNilaiTugas[:])
+			fmt.Println()
+			goto MenuGuru
 
 		case 6: //tampilan jika memilih menu 6. Hapus Quiz
 			if isEmpty(dataMatkul.namaQuiz[:]) { //cek array namaQuiz kosong atau tidak
@@ -410,6 +456,15 @@ MenuLogin:
 			goto MenuGuru
 
 		case 7: //tampilan jika memilih menu 7. Tampilkan List Tugas
+			if isEmpty(dataMatkul.namaTugas[:]) {
+				fmt.Println("Tugas kosong!")
+				fmt.Println("Tambah tugas terlebih dahulu!")
+			} else {
+				fmt.Println("Data Tugas yang tersimpan:")
+				tampilkan(dataMatkul.namaTugas[:])
+			}
+			fmt.Println()
+			goto MenuGuru
 
 		case 8: //tampilan jika memilih menu 8. Tampilkan List Quiz
 			if isEmpty(dataMatkul.namaQuiz[:]) { //cek array namaQuiz kosong atau tidak
@@ -442,6 +497,53 @@ MenuLogin:
 			goto MenuGuru
 
 		case 10: //tampilan jika memilih menu 10. Lihat List Nilai Murid
+			var pilihan int
+			fmt.Println("Pilih jenis nilai:")
+			fmt.Println("1. Tugas")
+			fmt.Println("2. Quiz")
+			fmt.Print("Pilihan Anda: ")
+			fmt.Scan(&pilihan)
+
+			var arrNilai []float64
+			var arrNamaMurid []string
+
+			// Pilih data nilai dan nama murid
+			if pilihan == 1 {
+				arrNilai = dataJawabanMatkul.nilaiTugas[:]
+				arrNamaMurid = dataJawabanMatkul.namaMuridTugas[:]
+			} else if pilihan == 2 {
+				arrNilai = dataJawabanMatkul.nilaiQuiz[:]
+				arrNamaMurid = dataJawabanMatkul.namaMuridQuiz[:]
+			} else {
+				fmt.Println("Pilihan tidak valid.")
+				goto MenuGuru
+			}
+
+			// Cari nilai tertentu terlebih dahulu
+			var target float64
+			fmt.Print("Masukkan nilai yang ingin dicari: ")
+			fmt.Scan(&target)
+
+			index, namaMurid := SequentialBinarySearchMurid(arrNilai, arrNamaMurid, target)
+			if index != -1 {
+				fmt.Printf("Nilai %.2f ditemukan pada murid: %s di indeks ke-%d (sebelum pengurutan)\n", target, namaMurid, index)
+			} else {
+				fmt.Println("Nilai tidak ditemukan (sebelum pengurutan).")
+			}
+
+			// Urutkan nilai dengan Selection Sort
+			SelectionSortMurid(arrNilai, arrNamaMurid)
+
+			// Tampilkan daftar nilai yang sudah diurutkan
+			fmt.Println("\n-- Daftar Nilai Murid (Setelah Pengurutan) --")
+			for i, nilai := range arrNilai {
+				if nilai != 0 { // Tampilkan hanya nilai yang valid
+					fmt.Printf("%d. Nama: %s, Nilai: %.2f\n", i+1, arrNamaMurid[i], nilai)
+				}
+			}
+
+			fmt.Println()
+			goto MenuGuru
 
 		case 11: //tampilan jika memilih menu 11. Keluar
 			fmt.Println()
@@ -502,6 +604,27 @@ MenuLogin:
 
 			switch pilihanMenuMatkul {
 			case 1: //tampilan jika memilih menu 1. Kerjakan Tugas
+				if isEmpty(dataMatkul.namaTugas[:]) { // Jika array namaTugas kosong
+					fmt.Println("Tugas Tidak Tersedia!")
+					fmt.Println("Hubungi guru anda untuk menambahkan tugas.")
+				} else { // Jika array namaTugas tidak kosong
+					fmt.Println("List Tugas Tersedia:")
+					tampilkan(dataMatkul.namaTugas[:])
+
+					KerjakanTugasQuiz(
+						dataMatkul.namaTugas[:],                     // Nama tugas
+						dataMatkul.pertanyaanTugas[:],               // Pertanyaan tugas
+						dataJawabanMatkul.jawabanPertanyaanTugas[:], // Jawaban siswa untuk tugas
+						dataMatkul.jawabanPertanyaanTugas[:],        // Kunci jawaban tugas
+						dataJawabanMatkul.nilaiPertanyaanTugas[:],   // Nilai per pertanyaan tugas
+						dataMatkul.bobotNilaiTugas[:],               // Bobot nilai per pertanyaan tugas
+						dataJawabanMatkul.namaMuridTugas[:],         // Nama murid untuk tugas
+						dataMurid.nama,                              // Nama murid yang sedang login
+						dataJawabanMatkul.nilaiTugas[:],             // Nilai total tugas
+					)
+				}
+				fmt.Println()
+				goto MenuMatkulMatematika
 
 			case 2: //tampilan jika memilih menu 2. Kerjakan Quiz
 				if isEmpty(dataMatkul.namaQuiz[:]) { //kalo array namaQuiz kosong, tampilkan informasi bahwa quiz tidak tersedia
@@ -566,6 +689,27 @@ MenuLogin:
 
 			switch pilihanMenuMatkul {
 			case 1: //tampilan jika memilih menu 1. Kerjakan Tugas
+				if isEmpty(dataMatkul.namaTugas[:]) { // Jika array namaTugas kosong
+					fmt.Println("Tugas Tidak Tersedia!")
+					fmt.Println("Hubungi guru anda untuk menambahkan tugas.")
+				} else { // Jika array namaTugas tidak kosong
+					fmt.Println("List Tugas Tersedia:")
+					tampilkan(dataMatkul.namaTugas[:])
+
+					KerjakanTugasQuiz(
+						dataMatkul.namaTugas[:],                     // Nama tugas
+						dataMatkul.pertanyaanTugas[:],               // Pertanyaan tugas
+						dataJawabanMatkul.jawabanPertanyaanTugas[:], // Jawaban siswa untuk tugas
+						dataMatkul.jawabanPertanyaanTugas[:],        // Kunci jawaban tugas
+						dataJawabanMatkul.nilaiPertanyaanTugas[:],   // Nilai per pertanyaan tugas
+						dataMatkul.bobotNilaiTugas[:],               // Bobot nilai per pertanyaan tugas
+						dataJawabanMatkul.namaMuridTugas[:],         // Nama murid untuk tugas
+						dataMurid.nama,                              // Nama murid yang sedang login
+						dataJawabanMatkul.nilaiTugas[:],             // Nilai total tugas
+					)
+				}
+				fmt.Println()
+				goto MenuMatkulIPA
 
 			case 2: //tampilan jika memilih menu 2. Kerjakan Quiz
 				if isEmpty(dataMatkul.namaQuiz[:]) { //kalo array namaQuiz kosong, tampilkan informasi bahwa quiz tidak tersedia
@@ -630,6 +774,27 @@ MenuLogin:
 
 			switch pilihanMenuMatkul {
 			case 1: //tampilan jika memilih menu 1. Kerjakan Tugas
+				if isEmpty(dataMatkul.namaTugas[:]) { // Jika array namaTugas kosong
+					fmt.Println("Tugas Tidak Tersedia!")
+					fmt.Println("Hubungi guru anda untuk menambahkan tugas.")
+				} else { // Jika array namaTugas tidak kosong
+					fmt.Println("List Tugas Tersedia:")
+					tampilkan(dataMatkul.namaTugas[:])
+
+					KerjakanTugasQuiz(
+						dataMatkul.namaTugas[:],                     // Nama tugas
+						dataMatkul.pertanyaanTugas[:],               // Pertanyaan tugas
+						dataJawabanMatkul.jawabanPertanyaanTugas[:], // Jawaban siswa untuk tugas
+						dataMatkul.jawabanPertanyaanTugas[:],        // Kunci jawaban tugas
+						dataJawabanMatkul.nilaiPertanyaanTugas[:],   // Nilai per pertanyaan tugas
+						dataMatkul.bobotNilaiTugas[:],               // Bobot nilai per pertanyaan tugas
+						dataJawabanMatkul.namaMuridTugas[:],         // Nama murid untuk tugas
+						dataMurid.nama,                              // Nama murid yang sedang login
+						dataJawabanMatkul.nilaiTugas[:],             // Nilai total tugas
+					)
+				}
+				fmt.Println()
+				goto MenuMatkulBIndo
 
 			case 2: //tampilan jika memilih menu 2. Kerjakan Quiz
 				if isEmpty(dataMatkul.namaQuiz[:]) { //kalo array namaQuiz kosong, tampilkan informasi bahwa quiz tidak tersedia
@@ -695,3 +860,4 @@ MenuLogin:
 		goto MenuLogin
 	}
 }
+
