@@ -607,6 +607,7 @@ MenuLogin:
 		case 1: //tampilan jika memilih menu 1. Matematika
 			dataJawabanMatkul = &jawabanMatkulMatematika
 			dataMatkul = &matkulMatematika
+			dataForum = &forumMatematika
 			dataGuru = &guru[0]
 		MenuMatkulMatematika:
 			fmt.Println("1. Kerjakan Tugas")
@@ -694,6 +695,7 @@ MenuLogin:
 		case 2: //tampilan jika memilih menu 2. IPA
 			dataJawabanMatkul = &jawabanMatkulIPA
 			dataMatkul = &matkulIPA
+			dataForum = &forumIPA
 			dataGuru = &guru[1]
 		MenuMatkulIPA:
 			fmt.Println("1. Kerjakan Tugas")
@@ -781,6 +783,7 @@ MenuLogin:
 		case 3: //tampilan jika memilih menu 3. Bahasa Indonesia
 			dataJawabanMatkul = &jawabanMatkulBIndo
 			dataMatkul = &matkulBIndo
+			dataForum = &forumBIndo
 			dataGuru = &guru[2]
 		MenuMatkulBIndo:
 			fmt.Println("1. Kerjakan Tugas")
