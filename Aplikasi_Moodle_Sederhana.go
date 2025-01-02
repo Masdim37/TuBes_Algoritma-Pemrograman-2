@@ -109,7 +109,6 @@ loopInputPertanyaan:
 	for i := 0; i < SIZE; i++ {
 		if ArrNamaTugasQuiz[i] == namaTugasQuiz {
 			for j := 0; j < 10; j++ {
-
 				tempPertanyaan = bacaInput(fmt.Sprintf("Masukkan pertanyaan ke-%d : ", j+1)) // Input pertanyaan
 
 				if strings.ToLower(tempPertanyaan) == "stop" { // Berhenti jika input "stop"
@@ -160,7 +159,7 @@ func EditTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []string, A
 	pilihanEditTugasQuiz = bacaInput(fmt.Sprintf("Masukkan nama tugas/quiz yang ingin diubah : "))
 	fmt.Println("List Pertanyaan Tugas/Quiz", pilihanEditTugasQuiz, " :")
 	for i := 0; i < SIZE; i++ {
-		if ArrNamaTugasQuiz[i] == pilihanEditTugasQuiz {
+		if ArrNamaTugasQuiz[i] == pilihanEditTugasQuiz && ArrNamaTugasQuiz[i+1] != "" {
 			for j := 0; j < 10; j++ {
 				fmt.Println("Pertanyaan ke-", j+1)
 				fmt.Println("Pertanyaan : ", ArrPertanyaanTugasQuiz[i*10+j])
@@ -369,9 +368,9 @@ MenuLogin:
 		case 1: //tampilan jika memilih menu 1. Tambah Tugas
 			var tempNamaTugas string
 			for i := 0; i < SIZE; i++ {
-				if dataMatkul.namaTugas[i] == "" {
-					tempNamaTugas = bacaInput("Masukkan nama Tugas : ") // Prompt kosong karena sudah ditampilkan sebelumnya
-					tempNamaTugas = dataMatkul.namaTugas[i]
+				if dataMatkul.namaQuiz[i] == "" { // Cek apakah ada data kosong pada array namaQuiz, jika indeks i kosong maka lakukan input
+					dataMatkul.namaQuiz[i] = bacaInput(fmt.Sprintf("Masukkan nama Tugas : ")) //input nama quiz
+					tempNamaTugas = dataMatkul.namaQuiz[i]
 					break
 				}
 			}
