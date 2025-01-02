@@ -57,19 +57,20 @@ var murid ArrMurid //membuat array bernama murid dengan tipe data ArrMurid (arra
 
 var guru ArrGuru //membuat array bernama guru dengan tipe data ArrGuru (array struct)
 
-var matkulMatematika Matkul
-var matkulIPA Matkul
-var matkulBIndo Matkul
+var matkulMatematika Matkul //membuat variabel bernama matkulMatematika dengan tipe data Matkul (struct berisi array)
+var matkulIPA Matkul        //membuat variabel bernama matkulIPA dengan tipe data Matkul (struct berisi array)
+var matkulBIndo Matkul      //membuat variabel bernama matkulBIndo dengan tipe data Matkul (struct berisi array)
 
-var jawabanMatkulMatematika jawabanMatkul //membuat array bernama matkulMatematika dengan tipe data ArrMatkul (array struct)
-var jawabanMatkulIPA jawabanMatkul        //membuat array bernama matkulIPA dengan tipe data ArrMatkul (array struct)
-var jawabanMatkulBIndo jawabanMatkul      //membuat array bernama matkulBIndo dengan tipe data ArrMatkul (array struct)
+var jawabanMatkulMatematika jawabanMatkul //membuat variabel bernama jawabanMatkulMatematika dengan tipe data jawabanMatkul (struct berisi array)
+var jawabanMatkulIPA jawabanMatkul        //membuat variabel bernama jawabanMatkulIPA dengan tipe data jawabanMatkul (struct berisi array)
+var jawabanMatkulBIndo jawabanMatkul      //membuat variabel bernama jawabanMatkulBIndo dengan tipe data jawabanMatkul (struct berisi array)
 
-var forumMatematika forum
-var forumIPA forum
-var forumBIndo forum
+var forumMatematika forum //membuat variabel bernama forumMatematika dengan tipe data forum (struct berisi array)
+var forumIPA forum        //membuat variabel bernama forumIPA dengan tipe data forum (struct berisi array)
+var forumBIndo forum      //membuat variabel bernama forumBIndo dengan tipe data forum (struct berisi array)
 
-func isEmpty(arrData []string) bool { //function untuk cek apakah array kosong atau tidak
+// function untuk cek apakah array kosong atau tidak
+func isEmpty(arrData []string) bool {
 	var cek bool = true
 	for i := 0; i < len(arrData); i++ {
 		if arrData[i] == "" {
@@ -82,7 +83,8 @@ func isEmpty(arrData []string) bool { //function untuk cek apakah array kosong a
 	return cek
 }
 
-func tampilkan(arrData []string) { //prosedur untuk menampilkan isi array
+// function untuk menampilkan isi array
+func tampilkan(arrData []string) {
 	for i := 0; i < len(arrData); i++ {
 		fmt.Printf("%d. %s\n", i+1, arrData[i])
 		if arrData[i+1] == "" {
@@ -91,7 +93,7 @@ func tampilkan(arrData []string) { //prosedur untuk menampilkan isi array
 	}
 }
 
-// Fungsi untuk membaca input dengan spasi
+// Function untuk membaca input dengan spasi
 func bacaInput(prompt string) string {
 	fmt.Print(prompt)
 	reader := bufio.NewReader(os.Stdin)
@@ -99,6 +101,7 @@ func bacaInput(prompt string) string {
 	return strings.TrimSpace(input) // Menghapus spasi dan newline
 }
 
+// function untuk input pertanyaan tugas dan quiz
 func InputPertanyaanTugasQuiz(ArrNamaTugasQuiz []string, namaTugasQuiz string, ArrPertanyaanTugasQuiz []string, ArrJawabanPertanyaanTugasQuiz []string, ArrBobotNilaiPertanyaanTugasQuiz []int) {
 	var tempPertanyaan string
 	for i := 0; i < SIZE; i++ {
@@ -121,36 +124,28 @@ func InputPertanyaanTugasQuiz(ArrNamaTugasQuiz []string, namaTugasQuiz string, A
 	}
 }
 
+// function untuk menghapus tugas quiz
 func HapusTugasQuiz(ArrNamaTugasQuiz []string, ArrPertanyaanTugasQuiz []string, ArrJawabanPertanyaanTugasQuiz []string, ArrBobotNilaiPertanyaanTugasQuiz []int) {
 	var pilihanHapusQuiz, konfirmasiHapusQuiz string
 
-	if isEmpty(ArrNamaTugasQuiz[:]) { //cek array namaQuiz kosong atau tidak
-		fmt.Println("Quiz kosong!")
-		fmt.Println("Tambah quiz terlebih dahulu!")
-	} else { //kalo ga kosong, tampilkan isi array namaQuiz dan lakukan penghapusan
-		fmt.Println("Data Quiz yang tersimpan :")
-		tampilkan(ArrNamaTugasQuiz[:])
-		fmt.Println()
-
-		pilihanHapusQuiz = bacaInput(fmt.Sprintf("Masukkan nama quiz yang ingin dihapus : "))
-		fmt.Print("Apakah anda yakin ingin mengapus quiz ", pilihanHapusQuiz, " ? [y/n] : ")
-		fmt.Scan(&konfirmasiHapusQuiz)
-		if konfirmasiHapusQuiz == "y" || konfirmasiHapusQuiz == "Y" { //kalo masukin konfirmasi y, lakukan penghapusan
-			for i := 0; i < SIZE; i++ {
-				if ArrNamaTugasQuiz[i] == pilihanHapusQuiz { //kalo nama quiz yang diinputkan sama dengan nama quiz yang ada di array namaQuiz, maka lakukan penghapusan
-					ArrNamaTugasQuiz[i] = "" //hapus nama quiz
-					for j := 0; j < 10; j++ {
-						ArrPertanyaanTugasQuiz[i*10+j] = ""          //hapus pertanyaan quiz (i = kode quiz, 10 = maks pertanyaan, j = kode pertanyaan quiz)
-						ArrJawabanPertanyaanTugasQuiz[i*10+j] = ""   //hapus kunci jawaban quiz (i = kode quiz, 10 = maks pertanyaan, j = kode kunci jawaban pertanyaan quiz)
-						ArrBobotNilaiPertanyaanTugasQuiz[i*10+j] = 0 // Menghapus bobot nilai pertanyaan quiz (i = kode quiz, 10 = maks pertanyaan, j = kode bobot nilai pertanyaan quiz)
-					}
-					fmt.Println("Quiz", pilihanHapusQuiz, "berhasil dihapus.") //tampilkan informasi bahwa quiz yang dipilih berhasil dihapus
-					break                                                      //keluar dari loop
+	pilihanHapusQuiz = bacaInput(fmt.Sprintf("Masukkan nama quiz yang ingin dihapus : "))
+	fmt.Print("Apakah anda yakin ingin mengapus quiz ", pilihanHapusQuiz, " ? [y/n] : ")
+	fmt.Scan(&konfirmasiHapusQuiz)
+	if konfirmasiHapusQuiz == "y" || konfirmasiHapusQuiz == "Y" { //kalo masukin konfirmasi y, lakukan penghapusan
+		for i := 0; i < SIZE; i++ {
+			if ArrNamaTugasQuiz[i] == pilihanHapusQuiz { //kalo nama quiz yang diinputkan sama dengan nama quiz yang ada di array namaQuiz, maka lakukan penghapusan
+				ArrNamaTugasQuiz[i] = "" //hapus nama quiz
+				for j := 0; j < 10; j++ {
+					ArrPertanyaanTugasQuiz[i*10+j] = ""          //hapus pertanyaan quiz (i = kode quiz, 10 = maks pertanyaan, j = kode pertanyaan quiz)
+					ArrJawabanPertanyaanTugasQuiz[i*10+j] = ""   //hapus kunci jawaban quiz (i = kode quiz, 10 = maks pertanyaan, j = kode kunci jawaban pertanyaan quiz)
+					ArrBobotNilaiPertanyaanTugasQuiz[i*10+j] = 0 // Menghapus bobot nilai pertanyaan quiz (i = kode quiz, 10 = maks pertanyaan, j = kode bobot nilai pertanyaan quiz)
 				}
+				fmt.Println("Quiz", pilihanHapusQuiz, "berhasil dihapus.") //tampilkan informasi bahwa quiz yang dipilih berhasil dihapus
+				break                                                      //keluar dari loop
 			}
-		} else if konfirmasiHapusQuiz == "n" || konfirmasiHapusQuiz == "N" { //kalo masukin konfirmasi n, batalkan penghapusan
-			fmt.Print("Penghapusan quiz ", pilihanHapusQuiz, " dibatalkan") //tampilkan informasi bahwa quiz yang dipilih ngga jadi dihapus
 		}
+	} else if konfirmasiHapusQuiz == "n" || konfirmasiHapusQuiz == "N" { //kalo masukin konfirmasi n, batalkan penghapusan
+		fmt.Print("Penghapusan quiz ", pilihanHapusQuiz, " dibatalkan") //tampilkan informasi bahwa quiz yang dipilih ngga jadi dihapus
 	}
 }
 
@@ -402,6 +397,14 @@ MenuLogin:
 		case 5: //tampilan jika memilih menu 5. Hapus Tugas
 
 		case 6: //tampilan jika memilih menu 6. Hapus Quiz
+			if isEmpty(dataMatkul.namaQuiz[:]) { //cek array namaQuiz kosong atau tidak
+				fmt.Println("Quiz kosong!")
+				fmt.Println("Tambah quiz terlebih dahulu!")
+			} else { //kalo ga kosong, tampilkan isi array namaQuiz
+				fmt.Println("Data Quiz yang tersimpan :")
+				tampilkan(dataMatkul.namaQuiz[:])
+			}
+
 			HapusTugasQuiz(dataMatkul.namaQuiz[:], dataMatkul.pertanyaanQuiz[:], dataMatkul.jawabanPertanyaanQuiz[:], dataMatkul.bobotNilaiQuiz[:])
 			fmt.Println()
 			goto MenuGuru
